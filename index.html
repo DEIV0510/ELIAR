@@ -1027,6 +1027,43 @@
   .reveal-delay-4 { transition-delay: 0.4s; }
   .reveal-delay-5 { transition-delay: 0.5s; }
 
+  /* ─── CAROUSEL MOBILE ─── */
+  .carousel-wrap {
+    position: relative;
+  }
+
+  .carousel-wrap::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 1.5rem;
+    width: 60px;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.92));
+    pointer-events: none;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  }
+
+  .carousel-dots {
+    display: none;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 1.25rem;
+  }
+
+  .carousel-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gray-200);
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+
+  .carousel-dot.active {
+    background: var(--navy);
+    width: 20px;
+    border-radius: 3px;
+  }
+
   /* ─── RESPONSIVE ─── */
   @media (max-width: 1024px) {
     .benefits-grid { grid-template-columns: repeat(2, 1fr); }
@@ -1052,8 +1089,72 @@
     .nav-links { display: none; }
     .nav-menu-btn { display: flex; }
 
-    .benefits-grid { grid-template-columns: 1fr; }
-    .products-grid { grid-template-columns: 1fr; }
+    /* ── Benefits carousel ── */
+    #benefits { padding-left: 0; padding-right: 0; }
+    #benefits .section-header { padding: 0 5%; }
+
+    .benefits-grid {
+      display: flex;
+      flex-direction: row;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      gap: 1rem;
+      padding: 0.5rem 5% 1.5rem;
+      grid-template-columns: unset;
+    }
+
+    .benefits-grid::-webkit-scrollbar { display: none; }
+
+    .benefits-grid::after {
+      content: '';
+      flex: 0 0 calc(5% - 1rem);
+    }
+
+    .benefit-card {
+      flex: 0 0 75vw;
+      max-width: 300px;
+      scroll-snap-align: start;
+    }
+
+    /* ── Products carousel ── */
+    #products { padding-left: 0; padding-right: 0; }
+    #products .section-header { padding: 0 5%; }
+
+    .products-grid {
+      display: flex;
+      flex-direction: row;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      gap: 1rem;
+      padding: 0.5rem 5% 1.5rem;
+      grid-template-columns: unset;
+    }
+
+    .products-grid::-webkit-scrollbar { display: none; }
+
+    .products-grid::after {
+      content: '';
+      flex: 0 0 calc(5% - 1rem);
+    }
+
+    .product-card {
+      flex: 0 0 76vw;
+      max-width: 300px;
+      scroll-snap-align: start;
+    }
+
+    .product-img { height: 220px; }
+
+    /* ── dots visibles en mobile ── */
+    .carousel-dots { display: flex; }
 
     .aspire-inner { grid-template-columns: 1fr; }
     .aspire-visual { height: 300px; }
@@ -1072,8 +1173,11 @@
 
   @media (max-width: 480px) {
     section { padding: 70px 5%; }
+    #benefits, #products { padding-left: 0; padding-right: 0; }
     .hero-img-wrap img { height: 320px; }
     .hero-content h1 { font-size: 2.2rem; }
+    .benefit-card { flex: 0 0 82vw; }
+    .product-card  { flex: 0 0 82vw; }
   }
 </style>
 </head>
@@ -1191,6 +1295,7 @@
       <p>ELIAR construye confianza producto a producto. Comprás con la seguridad de que recibirás exactamente lo que prometemos.</p>
     </div>
   </div>
+  <div class="carousel-dots" id="benefits-dots"></div>
 </section>
 
 <!-- ─── PRODUCTS ─── -->
@@ -1293,6 +1398,7 @@
     </div>
 
   </div>
+  <div class="carousel-dots" id="products-dots"></div>
 </section>
 
 <!-- ─── GALLERY MARQUEE ─── -->
@@ -1531,6 +1637,57 @@
       ? ''
       : 'display:flex;flex-direction:column;position:absolute;top:64px;left:0;right:0;background:rgba(255,255,255,0.98);backdrop-filter:blur(20px);padding:1.5rem 5%;gap:1.25rem;border-bottom:1px solid #E5E7EB;z-index:99;';
   });
+
+  // ─── CAROUSEL DOTS ───
+  function initCarousel(gridSel, dotsSel) {
+    const grid = document.querySelector(gridSel);
+    const dotsEl = document.getElementById(dotsSel);
+    if (!grid || !dotsEl) return;
+
+    const cards = Array.from(grid.children).filter(el => el.tagName !== 'DIV' || el.className !== '');
+    const count = cards.filter(c => !c.style.flex || c.style.flex !== '0 0 0px').length;
+
+    // Only activate on mobile
+    const mq = window.matchMedia('(max-width: 768px)');
+    let dots = [];
+
+    function build() {
+      if (!mq.matches) { dotsEl.innerHTML = ''; return; }
+      const items = Array.from(grid.querySelectorAll('.benefit-card, .product-card'));
+      dotsEl.innerHTML = '';
+      dots = items.map((_, i) => {
+        const d = document.createElement('button');
+        d.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+        d.setAttribute('aria-label', `Ir al elemento ${i + 1}`);
+        d.addEventListener('click', () => {
+          const card = items[i];
+          grid.scrollTo({ left: card.offsetLeft - grid.offsetLeft - (grid.clientWidth - card.offsetWidth) / 2, behavior: 'smooth' });
+        });
+        dotsEl.appendChild(d);
+        return d;
+      });
+    }
+
+    function update() {
+      if (!mq.matches) return;
+      const items = Array.from(grid.querySelectorAll('.benefit-card, .product-card'));
+      const scrollCenter = grid.scrollLeft + grid.clientWidth / 2;
+      let closest = 0, minDist = Infinity;
+      items.forEach((card, i) => {
+        const cardCenter = card.offsetLeft - grid.offsetLeft + card.offsetWidth / 2;
+        const dist = Math.abs(scrollCenter - cardCenter);
+        if (dist < minDist) { minDist = dist; closest = i; }
+      });
+      dots.forEach((d, i) => d.classList.toggle('active', i === closest));
+    }
+
+    build();
+    mq.addEventListener('change', build);
+    grid.addEventListener('scroll', update, { passive: true });
+  }
+
+  initCarousel('.benefits-grid', 'benefits-dots');
+  initCarousel('.products-grid', 'products-dots');
 
   // Hero parallax on scroll
   const heroImg = document.querySelector('.hero-img-wrap img');
