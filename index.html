@@ -1,1497 +1,1449 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ELIAR — Eleva tu Nivel</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%231229E8'/><text x='16' y='23' font-family='Arial Black,sans-serif' font-weight='900' font-size='22' fill='white' text-anchor='middle'>E</text></svg>">
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ELIAR — Tecnología Premium en Medellín</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0A1628;
+    --blue: #1229E8;
+    --blue-light: #2B44F0;
+    --gray-50: #F9FAFB;
+    --gray-100: #F3F4F6;
+    --gray-200: #E5E7EB;
+    --gray-400: #9CA3AF;
+    --gray-600: #4B5563;
+    --gray-800: #1F2937;
+    --white: #FFFFFF;
+    --radius-sm: 12px;
+    --radius-md: 20px;
+    --radius-lg: 32px;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.04);
+    --shadow-lg: 0 20px 60px rgba(0,0,0,0.10), 0 8px 24px rgba(0,0,0,0.06);
+    --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
 
-    :root {
-      --blue:      #1229E8;
-      --blue-dark: #0D1FB8;
-      --blue-glow: rgba(18,41,232,0.18);
-      --navy:      #0A1628;
-      --white:     #FFFFFF;
-      --gray-bg:   #F5F7FA;
-      --text:      #1D1D1F;
-      --muted:     #6E6E73;
-      --tint:      #EEF1FF;
-      --border:    rgba(18,41,232,0.12);
-      --radius:    16px;
-      --radius-sm: 10px;
-      --shadow-blue: 0 8px 32px rgba(18,41,232,0.22);
-    }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; }
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--white);
-      color: var(--text);
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-      cursor: none;
-    }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--white);
+    color: var(--gray-800);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
 
-    /* ─── CUSTOM CURSOR ──────────────────────────── */
-    #cursor-dot {
-      position: fixed;
-      width: 8px; height: 8px;
-      background: var(--blue);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9999;
-      transform: translate(-50%,-50%);
-      transition: transform 0.08s, width 0.2s, height 0.2s, background 0.2s;
-    }
-    #cursor-ring {
-      position: fixed;
-      width: 36px; height: 36px;
-      border: 1.5px solid rgba(18,41,232,0.5);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9998;
-      transform: translate(-50%,-50%);
-      transition: transform 0.18s cubic-bezier(0.16,1,0.3,1), width 0.25s, height 0.25s, border-color 0.2s, background 0.2s;
-    }
-    body.cursor-hover #cursor-dot { width: 12px; height: 12px; background: var(--blue-dark); }
-    body.cursor-hover #cursor-ring { width: 56px; height: 56px; border-color: rgba(18,41,232,0.25); background: rgba(18,41,232,0.05); }
+  h1, h2, h3, h4, .logo-text { font-family: 'Space Grotesk', sans-serif; }
 
-    /* ─── SCROLL PROGRESS ────────────────────────── */
-    #scroll-progress {
-      position: fixed;
-      top: 0; left: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--blue), #6C8EFF);
-      z-index: 200;
-      width: 0%;
-      transition: width 0.1s linear;
-    }
+  img { max-width: 100%; display: block; }
 
-    /* ─── NAVBAR ─────────────────────────────────── */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 18px 40px;
-      transition: background 0.4s, box-shadow 0.4s, padding 0.4s;
-    }
-    nav.scrolled {
-      background: rgba(255,255,255,0.88);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      box-shadow: 0 1px 0 rgba(10,22,40,0.08);
-      padding: 13px 40px;
-    }
-    .nav-logo {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 22px; font-weight: 700;
-      letter-spacing: -0.5px;
-      color: var(--blue);
-      text-decoration: none;
-      position: relative;
-      overflow: hidden;
-    }
-    .nav-logo::after {
-      content: attr(data-text);
-      position: absolute;
-      inset: 0;
-      color: var(--blue-dark);
-      clip-path: inset(0 100% 0 0);
-      transition: clip-path 0.4s cubic-bezier(0.16,1,0.3,1);
-    }
-    .nav-logo:hover::after { clip-path: inset(0 0% 0 0); }
+  a { text-decoration: none; color: inherit; }
 
-    .nav-links { display: flex; gap: 32px; list-style: none; }
-    .nav-links a {
-      font-size: 14px; font-weight: 500;
-      color: var(--text); text-decoration: none;
-      letter-spacing: 0.01em;
-      position: relative; padding-bottom: 2px;
-    }
-    .nav-links a::after {
-      content: '';
-      position: absolute;
-      bottom: -2px; left: 0;
-      width: 0; height: 1.5px;
-      background: var(--blue);
-      transition: width 0.3s cubic-bezier(0.16,1,0.3,1);
-    }
-    .nav-links a:hover { color: var(--blue); }
-    .nav-links a:hover::after { width: 100%; }
+  /* ─── NAVBAR ─── */
+  nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+    padding: 0 5%;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    transition: var(--transition);
+  }
 
-    .nav-cta {
-      background: var(--blue);
-      color: white !important;
-      padding: 9px 22px;
-      border-radius: 50px;
-      font-size: 14px !important; font-weight: 600 !important;
-      overflow: hidden; position: relative;
-    }
-    .nav-cta::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
-      transform: translateX(-100%);
-      transition: transform 0.4s;
-    }
-    .nav-cta:hover::before { transform: translateX(100%); }
-    .nav-cta:hover { box-shadow: var(--shadow-blue); color: white !important; }
-    .nav-cta::after { display: none !important; }
+  .logo-text {
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--navy);
+  }
 
-    .nav-hamburger {
-      display: none; flex-direction: column;
-      gap: 5px; cursor: none;
-      background: none; border: none; padding: 4px;
-    }
-    .nav-hamburger span {
-      display: block; width: 24px; height: 2px;
-      background: var(--text); border-radius: 2px;
-      transition: all 0.35s cubic-bezier(0.16,1,0.3,1);
-    }
-    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  .logo-text span {
+    color: var(--blue);
+  }
 
-    /* ─── MOBILE MENU ────────────────────────────── */
-    .mobile-menu {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      background: rgba(255,255,255,0.97);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      z-index: 99;
-      padding: 88px 24px 40px;
-      transform: translateY(-110%);
-      transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
-      box-shadow: 0 8px 40px rgba(10,22,40,0.12);
-    }
-    .mobile-menu.open { transform: translateY(0); }
-    .mobile-menu ul { list-style: none; display: flex; flex-direction: column; gap: 4px; }
-    .mobile-menu ul a {
-      display: block; padding: 14px 20px;
-      font-size: 17px; font-weight: 500;
-      color: var(--text); text-decoration: none;
-      border-radius: var(--radius-sm);
-      transition: background 0.2s, color 0.2s;
-    }
-    .mobile-menu ul a:hover { background: var(--tint); color: var(--blue); }
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
 
-    /* ─── HERO ───────────────────────────────────── */
-    .hero {
-      min-height: 100dvh;
-      display: flex; align-items: center; justify-content: center;
+  .nav-links a {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--gray-600);
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--navy); }
+
+  .nav-cta {
+    background: var(--navy);
+    color: var(--white) !important;
+    padding: 0.5rem 1.25rem;
+    border-radius: 100px;
+    font-size: 0.875rem !important;
+    font-weight: 600 !important;
+    transition: var(--transition) !important;
+  }
+
+  .nav-cta:hover { background: var(--blue) !important; color: var(--white) !important; transform: translateY(-1px); }
+
+  .nav-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    color: var(--navy);
+  }
+
+  /* ─── BUTTONS ─── */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--navy);
+    color: var(--white);
+    padding: 0.875rem 2rem;
+    border-radius: 100px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: -0.01em;
+    transition: var(--transition);
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-primary:hover {
+    background: var(--blue);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(18,41,232,0.3);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: transparent;
+    color: var(--navy);
+    padding: 0.875rem 2rem;
+    border-radius: 100px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: -0.01em;
+    border: 1.5px solid var(--gray-200);
+    transition: var(--transition);
+    cursor: pointer;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--navy);
+    background: var(--gray-50);
+    transform: translateY(-2px);
+  }
+
+  .btn-wa {
+    background: #25D366;
+    color: var(--white);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.875rem 2rem;
+    border-radius: 100px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: var(--transition);
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-wa:hover {
+    background: #20b858;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(37,211,102,0.35);
+  }
+
+  /* ─── HERO ─── */
+  #hero {
+    min-height: 100dvh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 100px 5% 60px;
+    gap: 4rem;
+    background: linear-gradient(160deg, #FFFFFF 0%, #F3F5FF 50%, #EEF1FF 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  #hero::before {
+    content: '';
+    position: absolute;
+    top: -200px;
+    right: -200px;
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, rgba(18,41,232,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(18,41,232,0.08);
+    color: var(--blue);
+    padding: 0.35rem 0.9rem;
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 1.25rem;
+  }
+
+  .hero-content h1 {
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    color: var(--navy);
+    margin-bottom: 1.25rem;
+  }
+
+  .hero-content h1 em {
+    font-style: normal;
+    background: linear-gradient(135deg, var(--blue) 0%, #6C83FF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-content p {
+    font-size: 1.1rem;
+    color: var(--gray-600);
+    line-height: 1.7;
+    max-width: 440px;
+    margin-bottom: 2.25rem;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .hero-visual {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-img-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 520px;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .hero-img-wrap img {
+    width: 100%;
+    height: 580px;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.8s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  .hero-img-wrap:hover img { transform: scale(1.03); }
+
+  .hero-float-badge {
+    position: absolute;
+    bottom: 32px;
+    left: -24px;
+    background: var(--white);
+    border-radius: var(--radius-sm);
+    padding: 1rem 1.25rem;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .hero-float-badge .icon {
+    width: 44px;
+    height: 44px;
+    background: var(--gray-50);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+  }
+
+  .hero-float-badge .text p:first-child {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--navy);
+  }
+
+  .hero-float-badge .text p:last-child {
+    font-size: 0.75rem;
+    color: var(--gray-400);
+  }
+
+  .hero-float-badge2 {
+    position: absolute;
+    top: 32px;
+    right: -20px;
+    background: var(--navy);
+    color: var(--white);
+    border-radius: var(--radius-sm);
+    padding: 0.75rem 1.1rem;
+    box-shadow: var(--shadow-lg);
+    animation: float 3s ease-in-out infinite 1.5s;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  .hero-float-badge2 p:first-child {
+    font-size: 1.4rem;
+    font-weight: 700;
+  }
+
+  .hero-float-badge2 p:last-child {
+    font-size: 0.7rem;
+    opacity: 0.7;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  /* ─── SECTION COMMONS ─── */
+  section { padding: 100px 5%; }
+
+  .section-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: var(--gray-100);
+    color: var(--gray-600);
+    padding: 0.3rem 0.85rem;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .section-header {
+    text-align: center;
+    max-width: 680px;
+    margin: 0 auto 4rem;
+  }
+
+  .section-header h2 {
+    font-size: clamp(1.9rem, 4vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--navy);
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+
+  .section-header p {
+    font-size: 1.05rem;
+    color: var(--gray-600);
+    line-height: 1.7;
+  }
+
+  /* ─── BENEFITS ─── */
+  #benefits {
+    background: var(--white);
+  }
+
+  .benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .benefit-card {
+    background: var(--gray-50);
+    border: 1px solid var(--gray-100);
+    border-radius: var(--radius-md);
+    padding: 2rem;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .benefit-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(18,41,232,0.04) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .benefit-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+    border-color: rgba(18,41,232,0.15);
+  }
+
+  .benefit-card:hover::before { opacity: 1; }
+
+  .benefit-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: var(--navy);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.25rem;
+  }
+
+  .benefit-icon svg { width: 24px; height: 24px; color: white; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+  .benefit-card h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  .benefit-card p {
+    font-size: 0.875rem;
+    color: var(--gray-600);
+    line-height: 1.65;
+  }
+
+  /* ─── PRODUCTS ─── */
+  #products {
+    background: linear-gradient(180deg, #F9FAFB 0%, #FFFFFF 100%);
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .product-card {
+    background: var(--white);
+    border: 1px solid var(--gray-100);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--gray-200);
+  }
+
+  .product-img {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+    object-position: center;
+    background: var(--gray-50);
+    transition: transform 0.6s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  .product-card:hover .product-img { transform: scale(1.04); }
+
+  .product-img-wrap { overflow: hidden; }
+
+  .product-info {
+    padding: 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .product-cat {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--blue);
+    margin-bottom: 0.4rem;
+  }
+
+  .product-info h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+  }
+
+  .product-info p {
+    font-size: 0.85rem;
+    color: var(--gray-600);
+    line-height: 1.6;
+    flex: 1;
+    margin-bottom: 1.25rem;
+  }
+
+  .product-btn {
+    width: 100%;
+    background: var(--navy);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 0.75rem 1rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: var(--transition);
+    text-decoration: none;
+  }
+
+  .product-btn:hover {
+    background: var(--blue);
+    transform: translateY(-1px);
+  }
+
+  .product-btn svg { width: 16px; height: 16px; fill: currentColor; }
+
+  /* ─── ASPIRATIONAL ─── */
+  #aspirational {
+    background: var(--navy);
+    color: var(--white);
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .aspire-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 600px;
+  }
+
+  .aspire-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 100px 6% 100px 8%;
+  }
+
+  .aspire-tag {
+    display: inline-flex;
+    background: rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.8);
+    padding: 0.35rem 0.9rem;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    width: fit-content;
+  }
+
+  .aspire-content h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 1.25rem;
+  }
+
+  .aspire-content h2 span {
+    color: #8FA3FF;
+  }
+
+  .aspire-content p {
+    font-size: 1.05rem;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.75;
+    max-width: 420px;
+    margin-bottom: 2.5rem;
+  }
+
+  .aspire-stats {
+    display: flex;
+    gap: 2.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .aspire-stat strong {
+    display: block;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 0.25rem;
+  }
+
+  .aspire-stat span {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .aspire-visual {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .aspire-visual img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    filter: brightness(0.85);
+    transition: transform 0.8s ease;
+  }
+
+  .aspire-visual:hover img { transform: scale(1.04); }
+
+  .aspire-visual::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, var(--navy) 0%, transparent 40%);
+    pointer-events: none;
+  }
+
+  /* ─── TRUST / GALLERY ─── */
+  #trust {
+    background: var(--white);
+  }
+
+  .trust-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    align-items: center;
+  }
+
+  .trust-visual {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .trust-visual img {
+    width: 100%;
+    border-radius: var(--radius-md);
+    object-fit: cover;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition);
+  }
+
+  .trust-visual img:hover { transform: scale(1.03); box-shadow: var(--shadow-lg); }
+
+  .trust-visual img:first-child {
+    grid-column: 1 / -1;
+    height: 260px;
+  }
+
+  .trust-visual img:nth-child(2),
+  .trust-visual img:nth-child(3) {
+    height: 180px;
+  }
+
+  .trust-points {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .trust-point {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .trust-icon {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    background: var(--gray-50);
+    border: 1px solid var(--gray-100);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+  }
+
+  .trust-point:hover .trust-icon {
+    background: var(--navy);
+    border-color: var(--navy);
+  }
+
+  .trust-point:hover .trust-icon svg { color: white; }
+
+  .trust-icon svg { width: 22px; height: 22px; color: var(--navy); fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; transition: color 0.3s; }
+
+  .trust-point-text h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 0.25rem;
+    letter-spacing: -0.01em;
+  }
+
+  .trust-point-text p {
+    font-size: 0.875rem;
+    color: var(--gray-600);
+    line-height: 1.6;
+  }
+
+  /* ─── GALLERY MARQUEE ─── */
+  #gallery {
+    background: var(--gray-50);
+    padding: 60px 0;
+    overflow: hidden;
+  }
+
+  .marquee-track {
+    display: flex;
+    gap: 1.25rem;
+    animation: marquee 28s linear infinite;
+    width: max-content;
+  }
+
+  .marquee-track:hover { animation-play-state: paused; }
+
+  .marquee-img {
+    width: 280px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    flex-shrink: 0;
+    box-shadow: var(--shadow-sm);
+  }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ─── CTA ─── */
+  #cta {
+    background: linear-gradient(135deg, #0A1628 0%, #0D1E3F 50%, #111F4D 100%);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #cta::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px;
+    height: 500px;
+    background: radial-gradient(ellipse, rgba(18,41,232,0.25) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cta-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  #cta .section-tag {
+    background: rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.75);
+    margin-bottom: 1.25rem;
+  }
+
+  #cta h2 {
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--white);
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+
+  #cta p {
+    font-size: 1.05rem;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 2.5rem;
+    line-height: 1.7;
+  }
+
+  .cta-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-wa-lg {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    background: #25D366;
+    color: white;
+    padding: 1.1rem 2.5rem;
+    border-radius: 100px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+    transition: var(--transition);
+    cursor: pointer;
+  }
+
+  .btn-wa-lg:hover {
+    background: #20b858;
+    transform: translateY(-3px);
+    box-shadow: 0 16px 48px rgba(37,211,102,0.4);
+  }
+
+  .btn-wa-lg svg { width: 22px; height: 22px; fill: currentColor; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--white);
+    border-top: 1px solid var(--gray-100);
+    padding: 3.5rem 5% 2.5rem;
+  }
+
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .footer-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--gray-100);
+  }
+
+  .footer-brand p {
+    font-size: 0.875rem;
+    color: var(--gray-600);
+    line-height: 1.7;
+    max-width: 300px;
+    margin: 0.75rem 0 1.5rem;
+  }
+
+  .footer-logo { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; color: var(--navy); }
+  .footer-logo span { color: var(--blue); }
+
+  .social-links {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .social-link {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--gray-100);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    color: var(--gray-600);
+  }
+
+  .social-link:hover { background: var(--navy); color: white; transform: translateY(-2px); }
+
+  .social-link svg { width: 18px; height: 18px; fill: currentColor; }
+
+  .footer-col h4 {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: -0.01em;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.07em;
+  }
+
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+
+  .footer-col ul li a, .footer-col ul li {
+    font-size: 0.875rem;
+    color: var(--gray-600);
+    transition: color 0.2s;
+    line-height: 1.5;
+  }
+
+  .footer-col ul li a:hover { color: var(--navy); }
+
+  .footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-bottom p { font-size: 0.8rem; color: var(--gray-400); }
+
+  /* ─── SCROLL REVEAL ─── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s cubic-bezier(0.4,0,0.2,1), transform 0.7s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+  .reveal-delay-5 { transition-delay: 0.5s; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 1024px) {
+    .benefits-grid { grid-template-columns: repeat(2, 1fr); }
+    .products-grid { grid-template-columns: repeat(2, 1fr); }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+    .footer-brand { grid-column: 1 / -1; }
+  }
+
+  @media (max-width: 768px) {
+    #hero {
+      grid-template-columns: 1fr;
+      padding: 90px 5% 60px;
       text-align: center;
-      padding: 120px 24px 80px;
-      position: relative; overflow: hidden;
-      background: var(--white);
-    }
-    #hero-canvas {
-      position: absolute; inset: 0;
-      width: 100%; height: 100%;
-      pointer-events: none; z-index: 0;
-      transform: translateZ(0);
-    }
-    .hero-content { position: relative; z-index: 2; max-width: 820px; }
-
-    .hero-badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: var(--tint); border: 1px solid var(--border);
-      color: var(--blue); font-size: 13px; font-weight: 500;
-      padding: 7px 16px; border-radius: 50px;
-      margin-bottom: 28px;
-      opacity: 0; animation: fade-up 0.7s 0.2s forwards;
-    }
-    .hero-badge::before {
-      content: ''; width: 6px; height: 6px;
-      background: var(--blue); border-radius: 50%;
-      animation: pulse-dot 2s infinite;
-    }
-    @keyframes pulse-dot {
-      0%,100% { opacity:1; transform:scale(1); }
-      50%      { opacity:0.4; transform:scale(1.5); }
     }
 
-    .hero-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(60px,10vw,120px);
-      font-weight: 700; letter-spacing: -4px; line-height: 0.92;
-      color: var(--text); margin-bottom: 14px;
-      opacity: 0; animation: fade-up 0.7s 0.35s forwards;
-    }
-    .hero-title .char {
-      display: inline-block;
-      transition: color 0.3s;
-    }
-    .hero-title .char.blue { color: var(--blue); }
+    .hero-content p { max-width: 100%; }
+    .hero-actions { justify-content: center; }
+    .hero-visual { order: -1; }
+    .hero-img-wrap img { height: 420px; }
+    .hero-float-badge { display: none; }
+    .hero-float-badge2 { top: 16px; right: 8px; }
 
-    .hero-tagline {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(18px,3vw,32px);
-      font-weight: 400; color: var(--muted);
-      letter-spacing: -0.3px; margin-bottom: 20px;
-      min-height: 1.5em;
-      opacity: 0; animation: fade-up 0.7s 0.5s forwards;
-    }
-    .typewriter-cursor {
-      display: inline-block; width: 2px;
-      background: var(--blue);
-      animation: blink 0.8s step-end infinite;
-      vertical-align: text-bottom;
-      height: 1em; margin-left: 2px;
-    }
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+    .nav-links { display: none; }
+    .nav-menu-btn { display: flex; }
 
-    .hero-sub {
-      font-size: 16px; color: var(--muted); line-height: 1.7;
-      max-width: 540px; margin: 0 auto 40px;
-      opacity: 0; animation: fade-up 0.7s 0.65s forwards;
-    }
-    .hero-actions {
-      display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;
-      opacity: 0; animation: fade-up 0.7s 0.8s forwards;
-    }
+    .benefits-grid { grid-template-columns: 1fr; }
+    .products-grid { grid-template-columns: 1fr; }
 
-    /* ─── MAGNETIC BUTTONS ───────────────────────── */
-    .btn-primary {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: var(--blue); color: white;
-      font-family: 'Inter', sans-serif;
-      font-size: 15px; font-weight: 600;
-      padding: 14px 30px; border-radius: 50px;
-      text-decoration: none; border: 2px solid var(--blue);
-      transition: background 0.25s, box-shadow 0.25s, border-color 0.25s;
-      position: relative; overflow: hidden;
-    }
-    .btn-primary::after {
-      content: ''; position: absolute; inset: 0;
-      background: radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,0.2) 0%, transparent 60%);
-      opacity: 0; transition: opacity 0.3s;
-    }
-    .btn-primary:hover { background: var(--blue-dark); border-color: var(--blue-dark); box-shadow: var(--shadow-blue); }
-    .btn-primary:hover::after { opacity: 1; }
+    .aspire-inner { grid-template-columns: 1fr; }
+    .aspire-visual { height: 300px; }
+    .aspire-content { padding: 60px 5%; }
 
-    .btn-outline {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: transparent; color: var(--text);
-      font-family: 'Inter', sans-serif;
-      font-size: 15px; font-weight: 600;
-      padding: 14px 30px; border-radius: 50px;
-      text-decoration: none; border: 2px solid rgba(29,29,31,0.15);
-      transition: all 0.25s;
-    }
-    .btn-outline:hover { border-color: var(--blue); color: var(--blue); }
+    .trust-grid { grid-template-columns: 1fr; }
+    .trust-visual { order: -1; }
 
-    .hero-scroll {
-      position: absolute; bottom: 36px; left: 50%;
-      transform: translateX(-50%);
-      display: flex; flex-direction: column; align-items: center; gap: 8px;
-      opacity: 0; animation: fade-in 1s 1.5s forwards;
-    }
-    .hero-scroll span {
-      font-size: 11px; letter-spacing: 0.1em;
-      text-transform: uppercase; color: var(--muted); font-weight: 500;
-    }
-    .scroll-line {
-      width: 1px; height: 40px;
-      background: linear-gradient(to bottom, var(--blue), transparent);
-      animation: scroll-line 1.8s ease-in-out infinite;
-    }
-    @keyframes scroll-line {
-      0%   { clip-path: inset(0 0 100% 0); }
-      45%  { clip-path: inset(0 0 0% 0); }
-      55%  { clip-path: inset(0 0 0% 0); }
-      100% { clip-path: inset(0 0 100% 0); }
-    }
+    .footer-top { grid-template-columns: 1fr; gap: 2rem; }
+    .footer-brand { grid-column: auto; }
 
-    @keyframes fade-up {
-      from { opacity:0; transform:translateY(28px); }
-      to   { opacity:1; transform:translateY(0); }
-    }
-    @keyframes fade-in {
-      from { opacity:0; } to { opacity:1; }
-    }
+    .footer-bottom { flex-direction: column; text-align: center; }
 
-    /* ─── MARQUEE ────────────────────────────────── */
-    .marquee-section {
-      background: var(--navy);
-      padding: 20px 0;
-      overflow: hidden;
-      border-top: 1px solid rgba(255,255,255,0.05);
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-    }
-    .marquee-inner {
-      display: flex;
-      will-change: transform;
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-    }
-    .marquee-set { display: flex; flex-shrink: 0; }
-    .marquee-item {
-      display: flex; align-items: center; gap: 16px;
-      padding: 0 32px; white-space: nowrap;
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 13px; font-weight: 500;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      color: rgba(255,255,255,0.45);
-    }
-    .marquee-item svg { color: var(--blue); opacity: 0.7; flex-shrink: 0; }
-    .marquee-dot { width:4px; height:4px; background: var(--blue); border-radius:50%; opacity:0.5; }
+    .aspire-stats { gap: 1.5rem; }
+  }
 
-    /* ─── SECTION BASE ───────────────────────────── */
-    section { padding: 100px 24px; }
-    .section-label {
-      display: inline-flex; align-items: center; gap: 8px;
-      font-size: 12px; font-weight: 600;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--blue); margin-bottom: 16px;
-    }
-    .section-label::before {
-      content: ''; width: 20px; height: 2px;
-      background: var(--blue); border-radius: 2px;
-    }
-    .section-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(28px,4vw,48px); font-weight: 700;
-      letter-spacing: -1.5px; line-height: 1.1;
-      color: var(--text); margin-bottom: 16px;
-    }
-    .section-subtitle {
-      font-size: 16px; color: var(--muted);
-      line-height: 1.7; max-width: 520px;
-    }
-    .section-header { margin-bottom: 56px; }
-    .container { max-width: 1160px; margin: 0 auto; }
-
-    /* ─── PRODUCTS ───────────────────────────────── */
-    #productos { background: var(--gray-bg); }
-
-    .products-grid {
-      display: grid;
-      grid-template-columns: repeat(4,1fr);
-      gap: 16px;
-    }
-    .product-card:nth-child(1) { grid-column: span 2; }
-    .product-card:nth-child(4) { grid-column: span 2; }
-
-    .product-card {
-      background: var(--white);
-      border: 1px solid rgba(10,22,40,0.07);
-      border-radius: var(--radius);
-      padding: 32px 28px 56px;
-      cursor: none;
-      position: relative; overflow: hidden;
-      transition: box-shadow 0.3s, border-color 0.3s;
-      transform-style: preserve-3d;
-      will-change: transform;
-    }
-    .product-card::before {
-      content: ''; position: absolute; inset: 0;
-      border-radius: var(--radius);
-      background: linear-gradient(135deg, rgba(18,41,232,0.06) 0%, transparent 60%);
-      opacity: 0; transition: opacity 0.4s;
-    }
-    .product-card::after {
-      content: ''; position: absolute;
-      top: -60%; left: -60%;
-      width: 200%; height: 200%;
-      background: radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(18,41,232,0.08) 0%, transparent 50%);
-      opacity: 0; transition: opacity 0.3s;
-      pointer-events: none;
-    }
-    .product-card:hover { box-shadow: 0 20px 60px rgba(18,41,232,0.13); border-color: rgba(18,41,232,0.2); }
-    .product-card:hover::before { opacity: 1; }
-    .product-card:hover::after  { opacity: 1; }
-
-    .product-card-inner { position: relative; z-index: 1; }
-
-    .product-icon {
-      width: 52px; height: 52px;
-      background: var(--tint); border-radius: 14px;
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 20px;
-      transition: background 0.3s, transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
-    }
-    .product-card:hover .product-icon {
-      background: rgba(18,41,232,0.12);
-      transform: scale(1.1) rotate(-4deg);
-    }
-    .product-icon svg { width: 26px; height: 26px; color: var(--blue); }
-
-    .product-name {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 17px; font-weight: 600;
-      color: var(--text); letter-spacing: -0.3px; margin-bottom: 8px;
-    }
-    .product-desc { font-size: 13.5px; color: var(--muted); line-height: 1.65; }
-
-    .product-arrow {
-      position: absolute; bottom: 24px; right: 24px;
-      width: 34px; height: 34px; border-radius: 50%;
-      background: var(--tint);
-      display: flex; align-items: center; justify-content: center;
-      transition: background 0.25s, transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
-      z-index: 2;
-    }
-    .product-card:hover .product-arrow { background: var(--blue); transform: translate(3px,-3px) rotate(0deg); }
-    .product-arrow svg { width: 14px; height: 14px; color: var(--blue); transition: color 0.2s; }
-    .product-card:hover .product-arrow svg { color: white; }
-
-    /* Scan line effect */
-    .product-card .scan-line {
-      position: absolute; left: 0; right: 0;
-      height: 2px; background: linear-gradient(90deg, transparent, rgba(18,41,232,0.4), transparent);
-      top: 0; opacity: 0;
-      transition: none;
-      transform: translateY(-2px);
-    }
-    .product-card:hover .scan-line {
-      opacity: 1;
-      animation: scan 1.2s ease-in-out forwards;
-    }
-    @keyframes scan {
-      from { transform: translateY(0);    opacity: 0.8; }
-      to   { transform: translateY(600px); opacity: 0; }
-    }
-
-    /* ─── STATS ──────────────────────────────────── */
-    #stats { background: var(--white); padding: 80px 24px; }
-    .stats-grid {
-      display: grid; grid-template-columns: repeat(4,1fr);
-      gap: 1px; background: rgba(10,22,40,0.07);
-      border-radius: var(--radius); overflow: hidden;
-    }
-    .stat-item {
-      background: var(--white); padding: 44px 32px;
-      text-align: center;
-      position: relative; overflow: hidden;
-      transition: background 0.3s;
-    }
-    .stat-item::after {
-      content: ''; position: absolute;
-      bottom: 0; left: 50%; transform: translateX(-50%);
-      width: 0; height: 2px;
-      background: var(--blue);
-      transition: width 0.4s cubic-bezier(0.16,1,0.3,1);
-    }
-    .stat-item:hover { background: var(--tint); }
-    .stat-item:hover::after { width: 60%; }
-
-    .stat-number {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(36px,4vw,56px); font-weight: 700;
-      letter-spacing: -2px; color: var(--text);
-      line-height: 1;
-    }
-    .stat-number span { color: var(--blue); }
-    .stat-label {
-      font-size: 13px; color: var(--muted);
-      font-weight: 500; margin-top: 8px;
-      letter-spacing: 0.02em;
-    }
-
-    /* ─── BRAND STORY ────────────────────────────── */
-    #nosotros { background: var(--white); }
-    .brand-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 80px; align-items: center;
-    }
-    .brand-text .section-subtitle { max-width: 100%; }
-    .brand-quote {
-      margin-top: 32px; padding: 24px;
-      background: var(--tint);
-      border-left: 3px solid var(--blue);
-      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-      position: relative; overflow: hidden;
-    }
-    .brand-quote::before {
-      content: '"';
-      position: absolute; top: -10px; right: 16px;
-      font-size: 80px; font-family: 'Space Grotesk', sans-serif;
-      font-weight: 700; color: rgba(18,41,232,0.08);
-      line-height: 1; pointer-events: none;
-    }
-    .brand-quote p {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 17px; font-weight: 500;
-      line-height: 1.6; color: var(--text); letter-spacing: -0.3px;
-      position: relative; z-index: 1;
-    }
-
-    .pillars { display: flex; flex-direction: column; gap: 16px; }
-    .pillar {
-      display: flex; align-items: flex-start; gap: 18px;
-      padding: 24px; background: var(--gray-bg);
-      border-radius: var(--radius); border: 1px solid transparent;
-      transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
-      cursor: none;
-    }
-    .pillar:hover {
-      border-color: var(--border);
-      box-shadow: 0 4px 20px rgba(18,41,232,0.08);
-      transform: translateX(6px);
-    }
-    .pillar-icon {
-      width: 44px; height: 44px; min-width: 44px;
-      background: var(--tint); border-radius: 12px;
-      display: flex; align-items: center; justify-content: center;
-      transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
-    }
-    .pillar:hover .pillar-icon { transform: rotate(-8deg) scale(1.1); }
-    .pillar-icon svg { width: 22px; height: 22px; color: var(--blue); }
-    .pillar-name {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 4px;
-    }
-    .pillar-text { font-size: 13.5px; color: var(--muted); line-height: 1.6; }
-
-    /* ─── WHY ELIAR ──────────────────────────────── */
-    #por-que { background: var(--gray-bg); }
-    .values-grid {
-      display: grid; grid-template-columns: repeat(4,1fr); gap: 16px;
-    }
-    .value-card {
-      text-align: center; padding: 40px 24px;
-      background: var(--white); border-radius: var(--radius);
-      border: 1px solid rgba(10,22,40,0.07);
-      transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s;
-      position: relative; overflow: hidden; cursor: none;
-    }
-    .value-card::before {
-      content: ''; position: absolute;
-      inset: -2px; border-radius: calc(var(--radius) + 2px);
-      background: linear-gradient(135deg, var(--blue), transparent 50%);
-      z-index: 0; opacity: 0;
-      transition: opacity 0.3s;
-    }
-    .value-card::after {
-      content: ''; position: absolute;
-      inset: 1px; border-radius: calc(var(--radius) - 1px);
-      background: var(--white); z-index: 0;
-    }
-    .value-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: var(--shadow-blue); }
-    .value-card:hover::before { opacity: 1; }
-    .value-card > * { position: relative; z-index: 1; }
-
-    .value-icon {
-      width: 56px; height: 56px; background: var(--tint);
-      border-radius: 16px;
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 20px;
-      transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), background 0.3s;
-    }
-    .value-card:hover .value-icon { transform: rotate(10deg) scale(1.15); background: rgba(18,41,232,0.1); }
-    .value-icon svg { width: 28px; height: 28px; color: var(--blue); }
-    .value-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 16px; font-weight: 600; color: var(--text);
-      margin-bottom: 8px; letter-spacing: -0.3px;
-    }
-    .value-text { font-size: 13px; color: var(--muted); line-height: 1.6; }
-
-    /* ─── CTA ────────────────────────────────────── */
-    #contacto {
-      background: var(--navy);
-      padding: 100px 24px;
-      text-align: center; position: relative; overflow: hidden;
-    }
-    .cta-canvas {
-      position: absolute; inset: 0;
-      width: 100%; height: 100%;
-      pointer-events: none; z-index: 0; opacity: 0.6;
-      transform: translateZ(0);
-    }
-    .cta-content { position: relative; z-index: 2; max-width: 640px; margin: 0 auto; }
-
-    .cta-badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(18,41,232,0.2);
-      border: 1px solid rgba(18,41,232,0.35);
-      color: rgba(255,255,255,0.8);
-      font-size: 12px; font-weight: 500; padding: 7px 16px;
-      border-radius: 50px; letter-spacing: 0.08em;
-      text-transform: uppercase; margin-bottom: 28px;
-    }
-    .cta-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(30px,5vw,52px); font-weight: 700;
-      color: white; letter-spacing: -1.5px; line-height: 1.1; margin-bottom: 16px;
-    }
-    .cta-title span { color: var(--blue); }
-    .cta-sub {
-      font-size: 16px; color: rgba(255,255,255,0.55);
-      line-height: 1.7; margin-bottom: 40px;
-    }
-
-    .btn-whatsapp {
-      display: inline-flex; align-items: center; gap: 10px;
-      background: #25D366; color: white;
-      font-family: 'Inter', sans-serif;
-      font-size: 15px; font-weight: 600;
-      padding: 16px 36px; border-radius: 50px;
-      text-decoration: none;
-      transition: background 0.25s, transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s;
-      box-shadow: 0 4px 20px rgba(37,211,102,0.3);
-      position: relative; overflow: hidden;
-    }
-    .btn-whatsapp::before {
-      content: ''; position: absolute; inset: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
-      transform: translateX(-100%); transition: transform 0.4s;
-    }
-    .btn-whatsapp:hover { background: #1ebe5a; transform: translateY(-4px) scale(1.03); box-shadow: 0 12px 40px rgba(37,211,102,0.45); }
-    .btn-whatsapp:hover::before { transform: translateX(100%); }
-    .btn-whatsapp svg { width: 20px; height: 20px; }
-
-    .cta-social {
-      margin-top: 40px; display: flex;
-      align-items: center; justify-content: center;
-      gap: 24px; flex-wrap: wrap;
-    }
-    .cta-social span { font-size: 13px; color: rgba(255,255,255,0.4); }
-    .cta-social a {
-      display: flex; align-items: center; gap: 7px;
-      color: rgba(255,255,255,0.55); text-decoration: none;
-      font-size: 13px; font-weight: 500;
-      transition: color 0.2s, transform 0.25s;
-    }
-    .cta-social a:hover { color: white; transform: translateY(-2px); }
-    .cta-social a svg { width: 16px; height: 16px; }
-
-    /* ─── FOOTER ─────────────────────────────────── */
-    footer { background: #060D1A; padding: 48px 24px; }
-    .footer-inner {
-      max-width: 1160px; margin: 0 auto;
-      display: flex; align-items: center;
-      justify-content: space-between; flex-wrap: wrap; gap: 24px;
-    }
-    .footer-logo {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 20px; font-weight: 700; color: var(--blue); text-decoration: none;
-    }
-    .footer-info { display: flex; flex-direction: column; gap: 4px; }
-    .footer-info span { font-size: 13px; color: rgba(255,255,255,0.4); }
-    .footer-links { display: flex; gap: 12px; }
-    .footer-links a {
-      display: flex; align-items: center; justify-content: center;
-      width: 38px; height: 38px; border-radius: 50%;
-      background: rgba(255,255,255,0.07);
-      color: rgba(255,255,255,0.55); text-decoration: none;
-      transition: background 0.2s, color 0.2s, transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
-    }
-    .footer-links a:hover { background: var(--blue); color: white; transform: translateY(-4px) scale(1.1); }
-    .footer-links svg { width: 17px; height: 17px; }
-
-    /* ─── FLOATING WHATSAPP ──────────────────────── */
-    .float-wa {
-      position: fixed; bottom: 28px; right: 28px; z-index: 200;
-      width: 56px; height: 56px; background: #25D366;
-      border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 4px 20px rgba(37,211,102,0.45);
-      text-decoration: none;
-      transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s;
-      animation: pop-in 0.5s 2s backwards cubic-bezier(0.34,1.56,0.64,1);
-    }
-    .float-wa:hover { transform: scale(1.12); box-shadow: 0 8px 30px rgba(37,211,102,0.55); }
-    .float-wa svg { width: 28px; height: 28px; color: white; }
-    .float-wa::after {
-      content: ''; position: absolute; inset: -4px; border-radius: 50%;
-      border: 2px solid rgba(37,211,102,0.4);
-      animation: ripple 2.5s ease-out infinite;
-    }
-    @keyframes ripple { 0%{transform:scale(1);opacity:0} 8%{opacity:0.7} 100%{transform:scale(1.7);opacity:0} }
-    @keyframes pop-in  { from{transform:scale(0);opacity:0} to{transform:scale(1);opacity:1} }
-
-    /* ─── REVEAL ─────────────────────────────────── */
-    .reveal {
-      opacity: 0; transform: translateY(36px);
-      transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
-    }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-    .reveal-delay-1 { transition-delay: 0.08s; }
-    .reveal-delay-2 { transition-delay: 0.16s; }
-    .reveal-delay-3 { transition-delay: 0.24s; }
-    .reveal-delay-4 { transition-delay: 0.32s; }
-    .reveal-left  { opacity:0; transform:translateX(-40px); transition:opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); }
-    .reveal-left.visible  { opacity:1; transform:translateX(0); }
-    .reveal-right { opacity:0; transform:translateX(40px);  transition:opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); }
-    .reveal-right.visible { opacity:1; transform:translateX(0); }
-
-    /* ─── RIPPLE CLICK ───────────────────────────── */
-    .ripple-effect {
-      position: absolute; border-radius: 50%;
-      background: rgba(18,41,232,0.15);
-      transform: scale(0); animation: ripple-click 0.6s ease-out forwards;
-      pointer-events: none;
-    }
-    @keyframes ripple-click { to { transform: scale(4); opacity: 0; } }
-
-    /* ─── RESPONSIVE ─────────────────────────────── */
-    @media (max-width: 1024px) {
-      .products-grid { grid-template-columns: repeat(2,1fr); }
-      .product-card:nth-child(1), .product-card:nth-child(4) { grid-column: span 1; }
-      .values-grid { grid-template-columns: repeat(2,1fr); }
-      .stats-grid { grid-template-columns: repeat(2,1fr); }
-    }
-    @media (max-width: 768px) {
-      nav { padding: 16px 20px; }
-      nav.scrolled { padding: 12px 20px; }
-      .nav-links { display: none; }
-      .nav-hamburger { display: flex; }
-      .products-grid { grid-template-columns: 1fr; gap: 12px; }
-      .product-card:nth-child(1), .product-card:nth-child(4) { grid-column: span 1; }
-      .brand-grid { grid-template-columns: 1fr; gap: 48px; }
-      .values-grid { grid-template-columns: 1fr 1fr; }
-      .footer-inner { flex-direction: column; align-items: flex-start; }
-      body { cursor: auto; }
-      #cursor-dot, #cursor-ring { display: none; }
-    }
-    @media (max-width: 480px) {
-      section { padding: 72px 20px; }
-      .values-grid { grid-template-columns: 1fr; }
-      .stats-grid { grid-template-columns: 1fr 1fr; }
-      .hero-actions { flex-direction: column; align-items: center; }
-      .btn-primary, .btn-outline { width:100%; justify-content:center; max-width:300px; }
-    }
-    /* ─── LOADER ─────────────────────────────────── */
-    #loader {
-      position: fixed; inset: 0; z-index: 9000;
-      background: #060D1A;
-      display: flex; align-items: center; justify-content: center;
-      transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), visibility 0.7s;
-    }
-    #loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-
-    .loader-ring {
-      position: absolute; width: 220px; height: 220px;
-      border-radius: 50%; border: 1px solid rgba(18,41,232,0.12);
-    }
-    .loader-ring-spin {
-      position: absolute; width: 220px; height: 220px;
-      border-radius: 50%; border: 1.5px solid transparent;
-      border-top-color: var(--blue);
-      border-right-color: rgba(18,41,232,0.3);
-      animation: spin 1.4s linear infinite;
-    }
-    .loader-ring-spin2 {
-      position: absolute; width: 178px; height: 178px;
-      border-radius: 50%; border: 1px solid transparent;
-      border-bottom-color: rgba(18,41,232,0.45);
-      border-left-color: rgba(18,41,232,0.15);
-      animation: spin 2.4s linear infinite reverse;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    .loader-center {
-      position: relative; z-index: 1;
-      display: flex; flex-direction: column;
-      align-items: center; gap: 24px;
-    }
-    .loader-wordmark {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 54px; font-weight: 700; letter-spacing: -2px;
-    }
-    .loader-wordmark span {
-      display: inline-block;
-      background: linear-gradient(135deg, #fff 0%, #6C8EFF 60%, var(--blue) 100%);
-      -webkit-background-clip: text; background-clip: text; color: transparent;
-      opacity: 0; transform: translateY(18px);
-      animation: letter-in 0.45s cubic-bezier(0.16,1,0.3,1) forwards;
-    }
-    .loader-wordmark span:nth-child(1){ animation-delay:0.1s; }
-    .loader-wordmark span:nth-child(2){ animation-delay:0.2s; }
-    .loader-wordmark span:nth-child(3){ animation-delay:0.3s; }
-    .loader-wordmark span:nth-child(4){ animation-delay:0.38s; }
-    .loader-wordmark span:nth-child(5){ animation-delay:0.46s; }
-    @keyframes letter-in { to { opacity:1; transform:translateY(0); } }
-
-    .loader-bar-wrap {
-      width: 120px; height: 1.5px;
-      background: rgba(255,255,255,0.07); border-radius: 2px; overflow: hidden;
-    }
-    .loader-bar {
-      height: 100%; width: 0;
-      background: linear-gradient(90deg, var(--blue), #6C8EFF);
-      animation: load-bar 1.3s 0.5s cubic-bezier(0.4,0,0.2,1) forwards;
-    }
-    @keyframes load-bar { to { width: 100%; } }
-
-    .loader-sub {
-      font-family: 'Inter', sans-serif; font-size: 10px;
-      font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase;
-      color: rgba(255,255,255,0.22);
-      opacity: 0; animation: fade-in 0.5s 0.55s forwards;
-    }
-    /* ─── END LOADER ─────────────────────────────── */
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation-duration:0.01ms !important; transition-duration:0.01ms !important; }
-    }
-  </style>
+  @media (max-width: 480px) {
+    section { padding: 70px 5%; }
+    .hero-img-wrap img { height: 320px; }
+    .hero-content h1 { font-size: 2.2rem; }
+  }
+</style>
 </head>
 <body>
 
-  <!-- LOADER -->
-  <div id="loader" role="status" aria-label="Cargando ELIAR">
-    <div class="loader-ring"       aria-hidden="true"></div>
-    <div class="loader-ring-spin"  aria-hidden="true"></div>
-    <div class="loader-ring-spin2" aria-hidden="true"></div>
-    <div class="loader-center">
-      <div class="loader-wordmark" aria-hidden="true">
-        <span>E</span><span>L</span><span>I</span><span>A</span><span>R</span>
-      </div>
-      <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
-      <div class="loader-sub">Eleva tu nivel</div>
+<!-- ─── NAVBAR ─── -->
+<nav>
+  <div class="logo-text">ELI<span>AR</span></div>
+  <ul class="nav-links">
+    <li><a href="#benefits">Beneficios</a></li>
+    <li><a href="#products">Productos</a></li>
+    <li><a href="#trust">Nosotros</a></li>
+    <li><a href="https://wa.me/573023594955" target="_blank" class="nav-cta">Comprar</a></li>
+  </ul>
+  <button class="nav-menu-btn" aria-label="Menú">
+    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <line x1="3" y1="6" x2="19" y2="6"/><line x1="3" y1="12" x2="19" y2="12"/><line x1="3" y1="18" x2="19" y2="18"/>
+    </svg>
+  </button>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section id="hero">
+  <div class="hero-content">
+    <div class="hero-tag">
+      <svg width="10" height="10" fill="currentColor" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4"/></svg>
+      Medellín, Colombia
+    </div>
+    <h1>Eleva tu <em>experiencia</em> tecnológica</h1>
+    <p>Productos premium, funcionales y modernos para acompañar tu día a día. Diseño que se siente diferente.</p>
+    <div class="hero-actions">
+      <a href="https://wa.me/573023594955" target="_blank" class="btn-primary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Comprar por WhatsApp
+      </a>
+      <a href="#products" class="btn-secondary">Ver productos</a>
     </div>
   </div>
 
-  <div id="scroll-progress" aria-hidden="true"></div>
-  <div id="cursor-dot"  aria-hidden="true"></div>
-  <div id="cursor-ring" aria-hidden="true"></div>
-
-  <!-- NAVBAR -->
-  <nav id="navbar" role="navigation" aria-label="Navegación principal">
-    <a href="#inicio" class="nav-logo" data-text="ELIAR" aria-label="ELIAR inicio">ELIAR</a>
-    <ul class="nav-links">
-      <li><a href="#productos">Productos</a></li>
-      <li><a href="#nosotros">Nosotros</a></li>
-      <li><a href="#por-que">Por qué ELIAR</a></li>
-      <li><a href="https://wa.me/573023594955" target="_blank" rel="noopener noreferrer" class="nav-cta">Contactar</a></li>
-    </ul>
-    <button class="nav-hamburger" id="menuBtn" aria-label="Abrir menú" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
-  </nav>
-
-  <!-- MOBILE MENU -->
-  <div class="mobile-menu" id="mobileMenu" role="dialog" aria-label="Menú">
-    <ul>
-      <li><a href="#productos" onclick="closeMenu()">Productos</a></li>
-      <li><a href="#nosotros" onclick="closeMenu()">Nosotros</a></li>
-      <li><a href="#por-que" onclick="closeMenu()">Por qué ELIAR</a></li>
-      <li><a href="https://wa.me/573023594955" target="_blank" rel="noopener noreferrer" onclick="closeMenu()">Contactar</a></li>
-    </ul>
-  </div>
-
-  <!-- HERO -->
-  <section class="hero" id="inicio" aria-label="Sección principal">
-    <canvas id="hero-canvas" aria-hidden="true"></canvas>
-    <div class="hero-content">
-      <div class="hero-badge">Medellín, Colombia</div>
-      <h1 class="hero-title" id="heroTitle"><span class="char blue">E</span><span class="char blue">L</span><span class="char blue">I</span><span class="char blue">A</span><span class="char blue">R</span></h1>
-      <p class="hero-tagline" id="heroTagline"><span class="typewriter-cursor" aria-hidden="true"></span></p>
-      <p class="hero-sub">
-        Accesorios tecnológicos de diseño premium para tu día a día.
-        Calidad, estilo y accesibilidad, todo en un solo lugar.
-      </p>
-      <div class="hero-actions">
-        <a href="#productos" class="btn-primary" id="btnPrimary">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-          Ver Productos
-        </a>
-        <a href="https://wa.me/573023594955" target="_blank" rel="noopener noreferrer" class="btn-outline">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          Contáctanos
-        </a>
+  <div class="hero-visual">
+    <div class="hero-img-wrap">
+      <img src="img/producto-08.jpg" alt="AirPods Pro ELIAR — productos premium" loading="eager">
+    </div>
+    <div class="hero-float-badge">
+      <div class="icon">🎧</div>
+      <div class="text">
+        <p>AirPods Pro</p>
+        <p>Cancelación de ruido ANC</p>
       </div>
     </div>
-    <div class="hero-scroll" aria-hidden="true">
-      <span>Scroll</span>
-      <div class="scroll-line"></div>
-    </div>
-  </section>
-
-  <!-- MARQUEE -->
-  <div class="marquee-section" aria-hidden="true">
-    <div class="marquee-inner" id="marqueeInner">
-      <div class="marquee-set" id="marqueeSet1"></div>
-      <div class="marquee-set" id="marqueeSet2"></div>
+    <div class="hero-float-badge2">
+      <p>100%</p>
+      <p>Calidad Premium</p>
     </div>
   </div>
+</section>
 
-  <!-- PRODUCTS -->
-  <section id="productos" aria-labelledby="productos-title">
-    <div class="container">
-      <div class="section-header reveal">
-        <div class="section-label">Productos</div>
-        <h2 class="section-title" id="productos-title">Tecnología para tu vida</h2>
-        <p class="section-subtitle">Cada producto está seleccionado para elevar tu experiencia diaria con innovación y diseño de primer nivel.</p>
+<!-- ─── BENEFITS ─── -->
+<section id="benefits">
+  <div class="section-header">
+    <div class="section-tag">Por qué elegirnos</div>
+    <h2>Todo lo que necesitas en tecnología</h2>
+    <p>Más que una tienda. Una marca que selecciona lo mejor para tu estilo de vida.</p>
+  </div>
+  <div class="benefits-grid">
+    <div class="benefit-card reveal reveal-delay-1">
+      <div class="benefit-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
       </div>
-      <div class="products-grid">
-
-        <article class="product-card reveal reveal-delay-1" tabindex="0">
-          <div class="scan-line" aria-hidden="true"></div>
-          <div class="product-card-inner">
-            <div class="product-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg></div>
-            <h3 class="product-name">AirPods Inalámbricos</h3>
-            <p class="product-desc">Sonido envolvente, libertad total. Audio de alta fidelidad con cancelación de ruido y conexión instantánea.</p>
-          </div>
-          <div class="product-arrow" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
-        </article>
-
-        <article class="product-card reveal reveal-delay-2" tabindex="0">
-          <div class="scan-line" aria-hidden="true"></div>
-          <div class="product-card-inner">
-            <div class="product-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.38.93 4.55 2.44 6.16"/><path d="M21 12c0-4.97-4.03-9-9-9"/><path d="M18.56 18.16C20.07 16.55 21 14.38 21 12"/><path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg></div>
-            <h3 class="product-name">Diademas Premium</h3>
-            <p class="product-desc">Experiencia auditiva de nivel profesional. Diseño over-ear de lujo con audio espacial y máximo comfort.</p>
-          </div>
-          <div class="product-arrow" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
-        </article>
-
-        <article class="product-card reveal reveal-delay-3" tabindex="0">
-          <div class="scan-line" aria-hidden="true"></div>
-          <div class="product-card-inner">
-            <div class="product-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
-            <h3 class="product-name">Accesorios Móviles</h3>
-            <p class="product-desc">Complementa tu dispositivo con accesorios diseñados para potenciar cada función al máximo.</p>
-          </div>
-          <div class="product-arrow" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
-        </article>
-
-        <article class="product-card reveal reveal-delay-1" tabindex="0">
-          <div class="scan-line" aria-hidden="true"></div>
-          <div class="product-card-inner">
-            <div class="product-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 18H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h3.19M15 6h2a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-3.19"/><line x1="23" y1="13" x2="23" y2="11"/><polyline points="11 6 7 12 13 12 9 18"/></svg></div>
-            <h3 class="product-name">Baterías Magnéticas</h3>
-            <p class="product-desc">Carga inalámbrica de alta velocidad con tecnología magnética. Siempre con energía, en cualquier lugar.</p>
-          </div>
-          <div class="product-arrow" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
-        </article>
-
-        <article class="product-card reveal reveal-delay-2" tabindex="0">
-          <div class="scan-line" aria-hidden="true"></div>
-          <div class="product-card-inner">
-            <div class="product-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-            <h3 class="product-name">Protectores y Fundas</h3>
-            <p class="product-desc">Protege tu inversión con estilo. Materiales premium que combinan durabilidad y elegancia.</p>
-          </div>
-          <div class="product-arrow" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
-        </article>
-
-        <article class="product-card reveal reveal-delay-3" tabindex="0">
-          <div class="scan-line" aria-hidden="true"></div>
-          <div class="product-card-inner">
-            <div class="product-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
-            <h3 class="product-name">Gadgets Tecnológicos</h3>
-            <p class="product-desc">Descubre dispositivos que transforman tu rutina. Innovación pensada para el día a día.</p>
-          </div>
-          <div class="product-arrow" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
-        </article>
-
-        <article class="product-card reveal reveal-delay-4" tabindex="0">
-          <div class="scan-line" aria-hidden="true"></div>
-          <div class="product-card-inner">
-            <div class="product-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
-            <h3 class="product-name">Accesorios Inteligentes</h3>
-            <p class="product-desc">Tecnología que se adapta a ti. Smart accessories para una vida más conectada y eficiente.</p>
-          </div>
-          <div class="product-arrow" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
-        </article>
-
-      </div>
+      <h3>Diseño Premium</h3>
+      <p>Accesorios seleccionados por su calidad visual y funcional. Cada producto que ofrecemos cumple con estándares de diseño elevados.</p>
     </div>
-  </section>
-
-  <!-- STATS -->
-  <section id="stats" aria-label="Estadísticas">
-    <div class="container">
-      <div class="stats-grid">
-        <div class="stat-item reveal">
-          <div class="stat-number"><span class="counter" data-target="500">0</span><span>+</span></div>
-          <div class="stat-label">Clientes satisfechos</div>
-        </div>
-        <div class="stat-item reveal reveal-delay-1">
-          <div class="stat-number"><span class="counter" data-target="100">0</span><span>+</span></div>
-          <div class="stat-label">Productos disponibles</div>
-        </div>
-        <div class="stat-item reveal reveal-delay-2">
-          <div class="stat-number"><span class="counter" data-target="32">0</span></div>
-          <div class="stat-label">Ciudades con envío</div>
-        </div>
-        <div class="stat-item reveal reveal-delay-3">
-          <div class="stat-number"><span class="counter" data-target="98">0</span><span>%</span></div>
-          <div class="stat-label">Índice de satisfacción</div>
-        </div>
+    <div class="benefit-card reveal reveal-delay-2">
+      <div class="benefit-icon">
+        <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
       </div>
+      <h3>Tecnología Funcional</h3>
+      <p>Cada producto está pensado para mejorar tu día a día: audio inmersivo, carga inalámbrica y accesorios que realmente usas.</p>
     </div>
-  </section>
-
-  <!-- BRAND STORY -->
-  <section id="nosotros" aria-labelledby="nosotros-title">
-    <div class="container">
-      <div class="brand-grid">
-        <div class="brand-text reveal-left">
-          <div class="section-label">Nuestra Historia</div>
-          <h2 class="section-title" id="nosotros-title">No somos solo una tienda</h2>
-          <p class="section-subtitle">
-            ELIAR nació en Medellín con una visión clara: construir una marca de tecnología que las personas reconozcan
-            por su calidad, diseño y confianza. Cada producto que ofrecemos es una herramienta para que
-            nuestros clientes vivan mejor, trabajen mejor y se conecten mejor.
-          </p>
-          <div class="brand-quote">
-            <p>"Nuestra misión es elevar tu nivel a través de la tecnología. Innovación, diseño y confianza, en cada detalle."</p>
-          </div>
-        </div>
-        <div class="pillars reveal-right">
-          <div class="pillar">
-            <div class="pillar-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
-            <div><div class="pillar-name">Innovación</div><p class="pillar-text">Buscamos siempre lo último en tecnología para traerte productos que marquen la diferencia en tu vida diaria.</p></div>
-          </div>
-          <div class="pillar">
-            <div class="pillar-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M4.93 4.93a10 10 0 0 0 0 14.14"/></svg></div>
-            <div><div class="pillar-name">Diseño Premium</div><p class="pillar-text">Cada producto combina funcionalidad y estética. Porque la tecnología también puede ser elegante.</p></div>
-          </div>
-          <div class="pillar">
-            <div class="pillar-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-            <div><div class="pillar-name">Confianza</div><p class="pillar-text">Transparencia y compromiso en cada compra. Tu satisfacción es nuestra prioridad absoluta.</p></div>
-          </div>
-        </div>
+    <div class="benefit-card reveal reveal-delay-3">
+      <div class="benefit-icon">
+        <svg viewBox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
       </div>
+      <h3>Envíos en Colombia</h3>
+      <p>Entregamos en Medellín y toda Colombia. Tu pedido llega de forma segura, rápida y bien empacado hasta tu puerta.</p>
     </div>
-  </section>
-
-  <!-- WHY ELIAR -->
-  <section id="por-que" aria-labelledby="porque-title">
-    <div class="container">
-      <div class="section-header reveal" style="text-align:center">
-        <div class="section-label" style="justify-content:center">Por qué elegirnos</div>
-        <h2 class="section-title" id="porque-title">La diferencia ELIAR</h2>
-        <p class="section-subtitle" style="margin:0 auto">Más que productos, una experiencia de compra diseñada para ti.</p>
+    <div class="benefit-card reveal reveal-delay-1">
+      <div class="benefit-icon">
+        <svg viewBox="0 0 24 24"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
       </div>
-      <div class="values-grid">
-        <div class="value-card reveal reveal-delay-1">
-          <div class="value-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
-          <div class="value-title">Calidad Premium</div>
-          <p class="value-text">Solo trabajamos con productos que pasan nuestro estándar de calidad. Sin compromisos.</p>
-        </div>
-        <div class="value-card reveal reveal-delay-2">
-          <div class="value-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
-          <div class="value-title">Envíos a Colombia</div>
-          <p class="value-text">Llevamos tecnología premium a todo el territorio colombiano. Rápido, seguro y confiable.</p>
-        </div>
-        <div class="value-card reveal reveal-delay-3">
-          <div class="value-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
-          <div class="value-title">Tecnología del Futuro</div>
-          <p class="value-text">Siempre a la vanguardia. Productos innovadores que te preparan para lo que viene.</p>
-        </div>
-        <div class="value-card reveal reveal-delay-4">
-          <div class="value-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-          <div class="value-title">Garantía Confiable</div>
-          <p class="value-text">Respaldamos cada compra con soporte directo y garantía en todos nuestros productos.</p>
-        </div>
-      </div>
+      <h3>Atención por WhatsApp</h3>
+      <p>Resolvemos todas tus dudas antes de comprar. Asesoría personalizada, rápida y sin complicaciones.</p>
     </div>
-  </section>
-
-  <!-- CTA -->
-  <section id="contacto" aria-labelledby="contacto-title">
-    <canvas class="cta-canvas" id="ctaCanvas" aria-hidden="true"></canvas>
-    <div class="cta-content">
-      <div class="cta-badge reveal">Estamos aquí para ti</div>
-      <h2 class="cta-title reveal reveal-delay-1" id="contacto-title">¿Listo para<br><span>elevar tu nivel?</span></h2>
-      <p class="cta-sub reveal reveal-delay-2">
-        Escríbenos por WhatsApp y te asesoramos para encontrar el producto perfecto para ti.
-        Atención personalizada desde Medellín para toda Colombia.
-      </p>
-      <div class="reveal reveal-delay-3">
-        <a href="https://wa.me/573023594955?text=Hola%20ELIAR%2C%20quiero%20m%C3%A1s%20informaci%C3%B3n%20sobre%20sus%20productos" target="_blank" rel="noopener noreferrer" class="btn-whatsapp" aria-label="Contactar por WhatsApp">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
-          Escribir por WhatsApp
-        </a>
+    <div class="benefit-card reveal reveal-delay-2">
+      <div class="benefit-icon">
+        <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
       </div>
-      <div class="cta-social reveal reveal-delay-4">
-        <span>Síguenos</span>
-        <a href="https://instagram.com/eliar.co" target="_blank" rel="noopener noreferrer" aria-label="Instagram @eliar.co">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-          @eliar.co
-        </a>
-        <a href="https://tiktok.com/@eliar.co" target="_blank" rel="noopener noreferrer" aria-label="TikTok @eliar.co">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.3 6.3 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.77a4.85 4.85 0 0 1-1.01-.08z"/></svg>
-          @eliar.co
-        </a>
-        <a href="https://facebook.com/Eliar" target="_blank" rel="noopener noreferrer" aria-label="Facebook Eliar">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-          Eliar
+      <h3>Productos Seleccionados</h3>
+      <p>No vendemos cualquier cosa. Cada accesorio pasa por un filtro de calidad antes de llegar a ti.</p>
+    </div>
+    <div class="benefit-card reveal reveal-delay-3">
+      <div class="benefit-icon">
+        <svg viewBox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+      </div>
+      <h3>Estilo y Confianza</h3>
+      <p>ELIAR construye confianza producto a producto. Comprás con la seguridad de que recibirás exactamente lo que prometemos.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PRODUCTS ─── -->
+<section id="products">
+  <div class="section-header">
+    <div class="section-tag">Catálogo</div>
+    <h2>Productos destacados</h2>
+    <p>Accesorios pensados para elevar cada momento de tu rutina diaria.</p>
+  </div>
+  <div class="products-grid">
+
+    <div class="product-card reveal reveal-delay-1">
+      <div class="product-img-wrap">
+        <img class="product-img" src="img/producto-01.jpg" alt="AirPods inalámbricos ELIAR" loading="lazy">
+      </div>
+      <div class="product-info">
+        <p class="product-cat">Audio inalámbrico</p>
+        <h3>AirPods Inalámbricos</h3>
+        <p>Sonido premium con cancelación de ruido activa (ANC). Diseño compacto, cómodo y elegante para escuchar todo el día.</p>
+        <a href="https://wa.me/573023594955?text=Hola%20ELIAR!%20Me%20interesa%20saber%20más%20sobre%20los%20AirPods%20inalámbricos" target="_blank" class="product-btn">
+          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Consultar por WhatsApp
         </a>
       </div>
     </div>
-  </section>
 
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-inner">
-      <a href="#inicio" class="footer-logo" aria-label="ELIAR inicio">ELIAR</a>
-      <div class="footer-info">
-        <span>Medellín, Antioquia, Colombia</span>
-        <span>© 2025 ELIAR. Todos los derechos reservados.</span>
+    <div class="product-card reveal reveal-delay-2">
+      <div class="product-img-wrap">
+        <img class="product-img" src="img/producto-02.jpg" alt="Diademas premium ELIAR AirPods Max" loading="lazy">
       </div>
-      <div class="footer-links">
-        <a href="https://instagram.com/eliar.co" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
-        <a href="https://tiktok.com/@eliar.co" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.3 6.3 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.77a4.85 4.85 0 0 1-1.01-.08z"/></svg></a>
-        <a href="https://facebook.com/Eliar" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
-        <a href="https://wa.me/573023594955" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg></a>
+      <div class="product-info">
+        <p class="product-cat">Diademas premium</p>
+        <h3>Diademas Tipo AirPods Max</h3>
+        <p>Diseño over-ear de alto impacto. Materiales premium, sonido envolvente y cancelación activa de ruido para inmersión total.</p>
+        <a href="https://wa.me/573023594955?text=Hola%20ELIAR!%20Me%20interesan%20las%20diademas%20tipo%20AirPods%20Max" target="_blank" class="product-btn">
+          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Consultar por WhatsApp
+        </a>
       </div>
     </div>
-  </footer>
 
-  <!-- FLOATING WHATSAPP -->
-  <a href="https://wa.me/573023594955?text=Hola%20ELIAR%2C%20quiero%20m%C3%A1s%20informaci%C3%B3n" target="_blank" rel="noopener noreferrer" class="float-wa" aria-label="Contactar por WhatsApp">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
-  </a>
+    <div class="product-card reveal reveal-delay-3">
+      <div class="product-img-wrap">
+        <img class="product-img" src="img/producto-10.jpg" alt="Baterías magnéticas ELIAR" loading="lazy">
+      </div>
+      <div class="product-info">
+        <p class="product-cat">Carga inalámbrica</p>
+        <h3>Baterías Magnéticas</h3>
+        <p>Carga inalámbrica que se adhiere magnéticamente a tu iPhone. Recarga en cualquier momento sin cables ni complicaciones.</p>
+        <a href="https://wa.me/573023594955?text=Hola%20ELIAR!%20Me%20interesan%20las%20baterías%20magnéticas" target="_blank" class="product-btn">
+          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Consultar por WhatsApp
+        </a>
+      </div>
+    </div>
+
+    <div class="product-card reveal reveal-delay-1">
+      <div class="product-img-wrap">
+        <img class="product-img" src="img/producto-07.jpg" alt="Accesorios inteligentes ELIAR" loading="lazy">
+      </div>
+      <div class="product-info">
+        <p class="product-cat">Accesorios inteligentes</p>
+        <h3>Accesorios para el Día a Día</h3>
+        <p>Gadgets y accesorios que integran estilo y tecnología: desde soportes magnéticos hasta cables y más.</p>
+        <a href="https://wa.me/573023594955?text=Hola%20ELIAR!%20Me%20interesan%20sus%20accesorios%20inteligentes" target="_blank" class="product-btn">
+          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Consultar por WhatsApp
+        </a>
+      </div>
+    </div>
+
+    <div class="product-card reveal reveal-delay-2">
+      <div class="product-img-wrap">
+        <img class="product-img" src="img/producto-06.jpg" alt="Fundas y protectores ELIAR" loading="lazy">
+      </div>
+      <div class="product-info">
+        <p class="product-cat">Protección</p>
+        <h3>Fundas y Protectores</h3>
+        <p>Fundas de silicona premium para AirPods y dispositivos móviles. Protección con estilo en múltiples colores.</p>
+        <a href="https://wa.me/573023594955?text=Hola%20ELIAR!%20Me%20interesan%20las%20fundas%20y%20protectores" target="_blank" class="product-btn">
+          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Consultar por WhatsApp
+        </a>
+      </div>
+    </div>
+
+    <div class="product-card reveal reveal-delay-3">
+      <div class="product-img-wrap">
+        <img class="product-img" src="img/producto-09.jpg" alt="Colección completa ELIAR" loading="lazy">
+      </div>
+      <div class="product-info">
+        <p class="product-cat">Gadgets</p>
+        <h3>Gadgets Tecnológicos</h3>
+        <p>Descubrí nuestra selección completa de gadgets inteligentes que combinan diseño, tecnología y funcionalidad real.</p>
+        <a href="https://wa.me/573023594955?text=Hola%20ELIAR!%20Quiero%20ver%20todos%20sus%20productos%20disponibles" target="_blank" class="product-btn">
+          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Consultar por WhatsApp
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─── GALLERY MARQUEE ─── -->
+<div id="gallery">
+  <div class="marquee-track">
+    <img class="marquee-img" src="img/producto-01.jpg" alt="ELIAR producto">
+    <img class="marquee-img" src="img/producto-02.jpg" alt="ELIAR producto">
+    <img class="marquee-img" src="img/producto-03.jpg" alt="ELIAR producto">
+    <img class="marquee-img" src="img/producto-04.jpg" alt="ELIAR producto">
+    <img class="marquee-img" src="img/producto-05.jpg" alt="ELIAR producto">
+    <img class="marquee-img" src="img/producto-06.jpg" alt="ELIAR producto">
+    <img class="marquee-img" src="img/producto-07.jpg" alt="ELIAR producto">
+    <img class="marquee-img" src="img/producto-08.jpg" alt="ELIAR producto">
+    <img class="marquee-img" src="img/producto-09.jpg" alt="ELIAR producto">
+    <img class="marquee-img" src="img/producto-10.jpg" alt="ELIAR producto">
+    <!-- duplicate for seamless loop -->
+    <img class="marquee-img" src="img/producto-01.jpg" alt="ELIAR producto">
+    <img class="marquee-img" src="img/producto-02.jpg" alt="ELIAR producto">
+    <img class="marquee-img" src="img/producto-03.jpg" alt="ELIAR producto">
+    <img class="marquee-img" src="img/producto-04.jpg" alt="ELIAR producto">
+    <img class="marquee-img" src="img/producto-05.jpg" alt="ELIAR producto">
+    <img class="marquee-img" src="img/producto-06.jpg" alt="ELIAR producto">
+    <img class="marquee-img" src="img/producto-07.jpg" alt="ELIAR producto">
+    <img class="marquee-img" src="img/producto-08.jpg" alt="ELIAR producto">
+    <img class="marquee-img" src="img/producto-09.jpg" alt="ELIAR producto">
+    <img class="marquee-img" src="img/producto-10.jpg" alt="ELIAR producto">
+  </div>
+</div>
+
+<!-- ─── ASPIRACIONAL ─── -->
+<section id="aspirational">
+  <div class="aspire-inner">
+    <div class="aspire-content reveal">
+      <div class="aspire-tag">Nuestra filosofía</div>
+      <h2>Tecnología que se siente <span>diferente</span></h2>
+      <p>En ELIAR seleccionamos accesorios que combinan diseño, utilidad y estilo para que cada detalle de tu rutina se vea y se sienta mejor.</p>
+      <div class="aspire-stats">
+        <div class="aspire-stat">
+          <strong>100%</strong>
+          <span>Calidad garantizada</span>
+        </div>
+        <div class="aspire-stat">
+          <strong>ANC</strong>
+          <span>Cancelación activa</span>
+        </div>
+        <div class="aspire-stat">
+          <strong>COL</strong>
+          <span>Envíos nacionales</span>
+        </div>
+      </div>
+      <a href="https://wa.me/573023594955" target="_blank" class="btn-wa">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Contáctanos ahora
+      </a>
+    </div>
+    <div class="aspire-visual">
+      <img src="img/producto-05.jpg" alt="AirPods Max midnight ELIAR — tecnología premium" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- ─── TRUST ─── -->
+<section id="trust">
+  <div class="trust-grid">
+    <div class="trust-visual reveal">
+      <img src="img/producto-04.jpg" alt="ELIAR catálogo de productos" loading="lazy">
+      <img src="img/producto-03.jpg" alt="ELIAR AirPods Pro calidad" loading="lazy">
+      <img src="img/producto-09.jpg" alt="ELIAR colección de AirPods" loading="lazy">
+    </div>
+    <div>
+      <div class="section-tag" style="margin-bottom:1rem">Por qué confiar en ELIAR</div>
+      <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:700;letter-spacing:-0.03em;color:var(--navy);line-height:1.1;margin-bottom:1rem;">Compra fácil, rápido y seguro</h2>
+      <p style="color:var(--gray-600);margin-bottom:2.5rem;line-height:1.7;">No importa si es tu primera vez o ya eres cliente ELIAR. Siempre tendrás la misma atención premium.</p>
+      <div class="trust-points">
+        <div class="trust-point reveal reveal-delay-1">
+          <div class="trust-icon">
+            <svg viewBox="0 0 24 24"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+          </div>
+          <div class="trust-point-text">
+            <h4>Atención personalizada por WhatsApp</h4>
+            <p>Te acompañamos en cada paso: antes, durante y después de tu compra.</p>
+          </div>
+        </div>
+        <div class="trust-point reveal reveal-delay-2">
+          <div class="trust-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <div class="trust-point-text">
+            <h4>Productos con diseño premium</h4>
+            <p>Cada accesorio es seleccionado por calidad, funcionalidad y estética.</p>
+          </div>
+        </div>
+        <div class="trust-point reveal reveal-delay-3">
+          <div class="trust-icon">
+            <svg viewBox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+          </div>
+          <div class="trust-point-text">
+            <h4>Entrega en Medellín y Colombia</h4>
+            <p>Tu pedido llega seguro y rápido a donde estés en el territorio nacional.</p>
+          </div>
+        </div>
+        <div class="trust-point reveal reveal-delay-4">
+          <div class="trust-icon">
+            <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          </div>
+          <div class="trust-point-text">
+            <h4>Asesoría antes de comprar</h4>
+            <p>¿No sabes qué modelo elegir? Te ayudamos a tomar la mejor decisión.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CTA ─── -->
+<section id="cta">
+  <div class="cta-inner reveal">
+    <div class="section-tag">Empezá ahora</div>
+    <h2>¿Listo para elevar tu nivel?</h2>
+    <p>Escribinos y encontrá el accesorio perfecto para vos. Asesoría gratuita, entrega en todo Colombia.</p>
+    <div class="cta-actions">
+      <a href="https://wa.me/573023594955?text=Hola%20ELIAR!%20Quiero%20conocer%20sus%20productos" target="_blank" class="btn-wa-lg">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Comprar por WhatsApp
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo">ELI<span>AR</span></div>
+        <p>Marca de tecnología premium con base en Medellín, Colombia. Accesorios que elevan tu experiencia diaria.</p>
+        <div class="social-links">
+          <!-- Instagram -->
+          <a href="https://instagram.com/eliar.co" target="_blank" class="social-link" aria-label="Instagram @eliar.co">
+            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </a>
+          <!-- TikTok -->
+          <a href="https://tiktok.com/@eliar.co" target="_blank" class="social-link" aria-label="TikTok @eliar.co">
+            <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.3 6.3 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.79 1.54V6.78a4.85 4.85 0 01-1.02-.09z"/></svg>
+          </a>
+          <!-- Facebook -->
+          <a href="https://facebook.com/Eliar" target="_blank" class="social-link" aria-label="Facebook Eliar">
+            <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+          <!-- WhatsApp -->
+          <a href="https://wa.me/573023594955" target="_blank" class="social-link" aria-label="WhatsApp ELIAR">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Productos</h4>
+        <ul>
+          <li><a href="https://wa.me/573023594955">AirPods inalámbricos</a></li>
+          <li><a href="https://wa.me/573023594955">Diademas premium</a></li>
+          <li><a href="https://wa.me/573023594955">Baterías magnéticas</a></li>
+          <li><a href="https://wa.me/573023594955">Fundas y protectores</a></li>
+          <li><a href="https://wa.me/573023594955">Gadgets tecnológicos</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contacto</h4>
+        <ul>
+          <li>Medellín, Antioquia</li>
+          <li>Colombia</li>
+          <li><a href="https://wa.me/573023594955">+57 302 359 4955</a></li>
+          <li><a href="https://instagram.com/eliar.co">@eliar.co</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 ELIAR. Medellín, Colombia. Todos los derechos reservados.</p>
+      <p>Hecho con 💙 para elevar tu experiencia</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ─── FLOATING WA BUTTON ─── -->
+<a href="https://wa.me/573023594955?text=Hola%20ELIAR!%20Me%20interesan%20sus%20productos" target="_blank" rel="noopener"
+  style="position:fixed;bottom:28px;right:28px;z-index:999;width:60px;height:60px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 32px rgba(37,211,102,0.45);transition:all 0.3s cubic-bezier(0.4,0,0.2,1);"
+  aria-label="Contactar por WhatsApp"
+  onmouseover="this.style.transform='scale(1.12)';this.style.boxShadow='0 12px 40px rgba(37,211,102,0.55)'"
+  onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 8px 32px rgba(37,211,102,0.45)'">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
 
 <script>
-// ── CUSTOM CURSOR ─────────────────────────────────
-const dot  = document.getElementById('cursor-dot');
-const ring = document.getElementById('cursor-ring');
-let mx = 0, my = 0, rx = 0, ry = 0;
-
-document.addEventListener('mousemove', e => {
-  mx = e.clientX; my = e.clientY;
-  dot.style.left = mx + 'px'; dot.style.top = my + 'px';
-});
-
-(function animRing() {
-  rx += (mx - rx) * 0.12;
-  ry += (my - ry) * 0.12;
-  ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
-  requestAnimationFrame(animRing);
-})();
-
-document.querySelectorAll('a, button, .product-card, .value-card, .pillar, .stat-item').forEach(el => {
-  el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
-  el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
-});
-
-// ── SCROLL PROGRESS ───────────────────────────────
-const prog = document.getElementById('scroll-progress');
-window.addEventListener('scroll', () => {
-  const pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
-  prog.style.width = pct + '%';
-}, { passive: true });
-
-// ── NAVBAR ────────────────────────────────────────
-const navbar = document.getElementById('navbar');
-window.addEventListener('scroll', () => {
-  navbar.classList.toggle('scrolled', window.scrollY > 30);
-}, { passive: true });
-
-// ── MOBILE MENU ───────────────────────────────────
-const menuBtn    = document.getElementById('menuBtn');
-const mobileMenu = document.getElementById('mobileMenu');
-
-menuBtn.addEventListener('click', () => {
-  const isOpen = mobileMenu.classList.toggle('open');
-  menuBtn.classList.toggle('open', isOpen);
-  menuBtn.setAttribute('aria-expanded', isOpen);
-  document.body.style.overflow = isOpen ? 'hidden' : '';
-});
-
-function closeMenu() {
-  mobileMenu.classList.remove('open');
-  menuBtn.classList.remove('open');
-  menuBtn.setAttribute('aria-expanded', false);
-  document.body.style.overflow = '';
-}
-document.addEventListener('click', e => {
-  if (!mobileMenu.contains(e.target) && !menuBtn.contains(e.target)) closeMenu();
-});
-
-// ── HERO CANVAS — NETWORK PARTICLES ──────────────
-(function() {
-  const canvas = document.getElementById('hero-canvas');
-  const ctx    = canvas.getContext('2d');
-  let W, H, pts;
-  const N = 55, MAX_DIST = 130, BLUE = '18,41,232';
-
-  function resize() {
-    const rect = canvas.parentElement.getBoundingClientRect();
-    W = canvas.width  = rect.width  || window.innerWidth;
-    H = canvas.height = rect.height || window.innerHeight;
-  }
-  resize();
-  window.addEventListener('resize', () => { resize(); init(); }, { passive: true });
-
-  function rand(a, b) { return a + Math.random() * (b - a); }
-
-  function init() {
-    pts = Array.from({ length: N }, () => ({
-      x: rand(0, W), y: rand(0, H),
-      vx: rand(-0.4, 0.4), vy: rand(-0.4, 0.4),
-      r: rand(1.5, 3)
-    }));
-  }
-  init();
-
-  let mouseX = W / 2, mouseY = H / 2;
-  canvas.parentElement.addEventListener('mousemove', e => {
-    const r = canvas.getBoundingClientRect();
-    mouseX = e.clientX - r.left;
-    mouseY = e.clientY - r.top;
-  });
-
-  function draw() {
-    ctx.clearRect(0, 0, W, H);
-
-    // mouse repulsion & connections
-    pts.forEach(p => {
-      const dx = p.x - mouseX, dy = p.y - mouseY;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < 100) {
-        p.vx += (dx / dist) * 0.15;
-        p.vy += (dy / dist) * 0.15;
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
       }
-      const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
-      if (speed > 1.2) { p.vx *= 0.98; p.vy *= 0.98; }
-
-      p.x += p.vx; p.y += p.vy;
-      if (p.x < 0 || p.x > W) p.vx *= -1;
-      if (p.y < 0 || p.y > H) p.vy *= -1;
     });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
 
-    // draw lines
-    for (let i = 0; i < pts.length; i++) {
-      for (let j = i + 1; j < pts.length; j++) {
-        const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
-        const d = Math.sqrt(dx * dx + dy * dy);
-        if (d < MAX_DIST) {
-          ctx.beginPath();
-          ctx.strokeStyle = `rgba(${BLUE},${(1 - d / MAX_DIST) * 0.18})`;
-          ctx.lineWidth = 1;
-          ctx.moveTo(pts[i].x, pts[i].y);
-          ctx.lineTo(pts[j].x, pts[j].y);
-          ctx.stroke();
-        }
-      }
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Navbar scroll effect
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 40) {
+      nav.style.background = 'rgba(255,255,255,0.97)';
+      nav.style.boxShadow = '0 2px 20px rgba(0,0,0,0.08)';
+    } else {
+      nav.style.background = 'rgba(255,255,255,0.85)';
+      nav.style.boxShadow = 'none';
     }
+  }, { passive: true });
 
-    // draw dots
-    pts.forEach(p => {
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(${BLUE},0.35)`;
-      ctx.fill();
-    });
+  // Mobile menu toggle
+  const menuBtn = document.querySelector('.nav-menu-btn');
+  const navLinks = document.querySelector('.nav-links');
+  menuBtn.addEventListener('click', () => {
+    const open = navLinks.style.display === 'flex';
+    navLinks.style.cssText = open
+      ? ''
+      : 'display:flex;flex-direction:column;position:absolute;top:64px;left:0;right:0;background:rgba(255,255,255,0.98);backdrop-filter:blur(20px);padding:1.5rem 5%;gap:1.25rem;border-bottom:1px solid #E5E7EB;z-index:99;';
+  });
 
-    requestAnimationFrame(draw);
-  }
-  draw();
-})();
-
-// ── CTA CANVAS ────────────────────────────────────
-(function() {
-  const canvas = document.getElementById('ctaCanvas');
-  const ctx    = canvas.getContext('2d');
-  let W, H;
-
-  function resize() {
-    const rect = canvas.parentElement.getBoundingClientRect();
-    W = canvas.width  = rect.width  || 800;
-    H = canvas.height = rect.height || 400;
-  }
-  const section = canvas.parentElement;
-  const ro = new ResizeObserver(resize);
-  ro.observe(section);
-  resize();
-
-  const stars = Array.from({ length: 60 }, () => ({
-    x: Math.random(), y: Math.random(),
-    r: Math.random() * 1.5 + 0.5,
-    a: Math.random(), da: (Math.random() - 0.5) * 0.008
-  }));
-
-  function draw() {
-    ctx.clearRect(0, 0, W, H);
-    stars.forEach(s => {
-      s.a = Math.max(0.05, Math.min(1, s.a + s.da));
-      if (s.a <= 0.05 || s.a >= 1) s.da *= -1;
-      ctx.beginPath();
-      ctx.arc(s.x * W, s.y * H, s.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(100,140,255,${s.a * 0.6})`;
-      ctx.fill();
-    });
-    requestAnimationFrame(draw);
-  }
-  draw();
-})();
-
-// ── TYPEWRITER ────────────────────────────────────
-(function() {
-  const el      = document.getElementById('heroTagline');
-  const cursor  = el.querySelector('.typewriter-cursor');
-  const phrases = [
-    'Eleva tu nivel con tecnología premium',
-    'Diseño que marca la diferencia',
-    'Innovación para tu día a día',
-    'Calidad que se siente'
-  ];
-  let pi = 0, ci = 0, deleting = false;
-
-  function tick() {
-    const phrase = phrases[pi];
-    const text   = deleting ? phrase.slice(0, ci--) : phrase.slice(0, ci++);
-    el.childNodes[0]?.nodeType === 3
-      ? (el.childNodes[0].textContent = text)
-      : el.insertBefore(document.createTextNode(text), cursor);
-
-    const wait = deleting
-      ? (ci < 0 ? (deleting = false, pi = (pi + 1) % phrases.length, ci = 0, 500) : 40)
-      : (ci > phrase.length ? (deleting = true, 1600) : 60);
-    setTimeout(tick, wait);
-  }
-  setTimeout(tick, 1200);
-})();
-
-// ── MARQUEE (RAF — sin titileo) ───────────────────
-(function() {
-  const items = [
-    'AirPods Premium','Diademas Max','Baterías Magnéticas',
-    'Gadgets Inteligentes','Protectores Elite','Medellín Colombia',
-    'Tecnología Premium','Envíos a Colombia','Garantía Confiable'
-  ];
-  const inner = document.getElementById('marqueeInner');
-  const set1  = document.getElementById('marqueeSet1');
-  const set2  = document.getElementById('marqueeSet2');
-  const icon  = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`;
-
-  function buildSet(container) {
-    items.forEach(txt => {
-      const div = document.createElement('div');
-      div.className = 'marquee-item';
-      div.innerHTML = `${icon} ${txt} <span class="marquee-dot"></span>`;
-      container.appendChild(div);
-    });
-  }
-  buildSet(set1);
-  buildSet(set2);
-
-  // RAF-based: no CSS animation = no flicker on loop
-  let pos = 0;
-  let paused = false;
-  let setW = 0;
-
-  // measure after fonts load — getBoundingClientRect gives sub-pixel precision
-  function startMarquee() {
-    setW = set1.getBoundingClientRect().width;
-    if (!setW) { requestAnimationFrame(startMarquee); return; }
-    inner.addEventListener('mouseenter', () => paused = true);
-    inner.addEventListener('mouseleave', () => paused = false);
-    tick();
-  }
-
-  function tick() {
-    if (!paused) {
-      pos -= 0.55;
-      if (pos <= -setW) pos += setW; // += setW handles any overshoot, no gap
-      inner.style.transform = `translate3d(${Math.round(pos)}px,0,0)`;
+  // Hero parallax on scroll
+  const heroImg = document.querySelector('.hero-img-wrap img');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY < window.innerHeight) {
+      heroImg.style.transform = `scale(1) translateY(${window.scrollY * 0.08}px)`;
     }
-    requestAnimationFrame(tick);
-  }
-
-  document.fonts.ready.then(startMarquee);
-})();
-
-// ── LOADER ────────────────────────────────────────
-(function() {
-  const loader = document.getElementById('loader');
-  // Hide after animation completes (bar takes ~1.8s total)
-  setTimeout(() => {
-    loader.classList.add('hidden');
-    setTimeout(() => loader.remove(), 700);
-  }, 1900);
-})();
-
-// ── INTERSECTION OBSERVER (REVEAL) ────────────────
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.classList.add('visible');
-      observer.unobserve(e.target);
-    }
-  });
-}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-
-document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => observer.observe(el));
-
-// ── COUNTER ANIMATION ─────────────────────────────
-const counterObs = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (!e.isIntersecting) return;
-    const el     = e.target;
-    const target = +el.dataset.target;
-    const dur    = 1800;
-    const start  = performance.now();
-    function step(now) {
-      const t   = Math.min((now - start) / dur, 1);
-      const val = Math.round(t < 0.5 ? 2 * t * t * target : (1 - Math.pow(-2 * t + 2, 2) / 2) * target);
-      el.textContent = val.toLocaleString();
-      if (t < 1) requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
-    counterObs.unobserve(el);
-  });
-}, { threshold: 0.5 });
-
-document.querySelectorAll('.counter').forEach(el => counterObs.observe(el));
-
-// ── 3D TILT ON PRODUCT CARDS ──────────────────────
-document.querySelectorAll('.product-card').forEach(card => {
-  card.addEventListener('mousemove', e => {
-    const r   = card.getBoundingClientRect();
-    const cx  = r.left + r.width  / 2;
-    const cy  = r.top  + r.height / 2;
-    const dx  = (e.clientX - cx) / (r.width  / 2);
-    const dy  = (e.clientY - cy) / (r.height / 2);
-    card.style.transform = `perspective(800px) rotateY(${dx * 6}deg) rotateX(${-dy * 6}deg) translateZ(8px)`;
-    card.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
-    card.style.setProperty('--my', ((e.clientY - r.top ) / r.height * 100) + '%');
-  });
-  card.addEventListener('mouseleave', () => {
-    card.style.transform = 'perspective(800px) rotateY(0) rotateX(0) translateZ(0)';
-    card.style.transition = 'transform 0.5s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s, border-color 0.3s';
-    setTimeout(() => card.style.transition = '', 500);
-  });
-});
-
-// ── RIPPLE ON CLICK ───────────────────────────────
-document.querySelectorAll('.btn-primary, .btn-outline, .btn-whatsapp').forEach(btn => {
-  btn.addEventListener('click', e => {
-    const r    = btn.getBoundingClientRect();
-    const size = Math.max(r.width, r.height);
-    const el   = document.createElement('span');
-    el.className = 'ripple-effect';
-    el.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX-r.left-size/2}px;top:${e.clientY-r.top-size/2}px;`;
-    btn.appendChild(el);
-    setTimeout(() => el.remove(), 700);
-  });
-});
-
-// ── MOUSE GLOW ON BUTTONS ─────────────────────────
-document.querySelectorAll('.btn-primary').forEach(btn => {
-  btn.addEventListener('mousemove', e => {
-    const r = btn.getBoundingClientRect();
-    btn.style.setProperty('--mx', ((e.clientX - r.left) / r.width  * 100) + '%');
-    btn.style.setProperty('--my', ((e.clientY - r.top ) / r.height * 100) + '%');
-  });
-});
-
-// ── SMOOTH SCROLL ─────────────────────────────────
-document.querySelectorAll('a[href^="#"]').forEach(a => {
-  a.addEventListener('click', e => {
-    const id = a.getAttribute('href').slice(1);
-    const el = id ? document.getElementById(id) : null;
-    if (el) { e.preventDefault(); el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
-  });
-});
+  }, { passive: true });
 </script>
 </body>
 </html>
