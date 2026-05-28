@@ -935,6 +935,80 @@
 
   .footer-bottom p { font-size: 0.8rem; color: var(--gray-400); }
 
+  /* ─── PAGE LOADER ─── */
+  #page-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: #ECEEF1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.7s cubic-bezier(0.4,0,0.2,1), visibility 0.7s;
+  }
+
+  #page-loader.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .loader-logo {
+    width: clamp(200px, 42vw, 360px);
+    height: auto;
+    opacity: 0;
+    animation: loaderLogoIn 0.9s cubic-bezier(0.4,0,0.2,1) 0.15s forwards;
+    border-radius: 8px;
+  }
+
+  @keyframes loaderLogoIn {
+    from { opacity: 0; transform: scale(0.88) translateY(14px); filter: blur(4px); }
+    to   { opacity: 1; transform: scale(1) translateY(0);       filter: blur(0); }
+  }
+
+  .loader-tagline {
+    margin-top: 1.75rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #9CA3AF;
+    opacity: 0;
+    animation: loaderTagIn 0.6s ease 0.65s forwards;
+  }
+
+  @keyframes loaderTagIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .loader-bar-track {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: rgba(0,0,0,0.07);
+    overflow: hidden;
+  }
+
+  .loader-bar {
+    height: 100%;
+    width: 0%;
+    background: #1229E8;
+    animation: loaderBar 1.8s cubic-bezier(0.4,0,0.1,1) 0.1s forwards;
+    border-radius: 0 2px 2px 0;
+  }
+
+  @keyframes loaderBar {
+    0%   { width: 0%; }
+    55%  { width: 72%; }
+    90%  { width: 92%; }
+    100% { width: 100%; }
+  }
+
   /* ─── SCROLL REVEAL ─── */
   .reveal {
     opacity: 0;
@@ -1005,9 +1079,18 @@
 </head>
 <body>
 
+<!-- ─── PAGE LOADER ─── -->
+<div id="page-loader" role="status" aria-label="Cargando ELIAR">
+  <img class="loader-logo" src="img/logo-1.jpg" alt="ELIAR">
+  <p class="loader-tagline">Tecnología Premium · Medellín</p>
+  <div class="loader-bar-track"><div class="loader-bar"></div></div>
+</div>
+
 <!-- ─── NAVBAR ─── -->
 <nav>
-  <div class="logo-text">ELI<span>AR</span></div>
+  <a href="#hero">
+    <img src="img/logo-1.jpg" alt="ELIAR" style="height:32px;width:auto;mix-blend-mode:multiply;border-radius:4px;">
+  </a>
   <ul class="nav-links">
     <li><a href="#benefits">Beneficios</a></li>
     <li><a href="#products">Productos</a></li>
@@ -1345,7 +1428,7 @@
   <div class="footer-inner">
     <div class="footer-top">
       <div class="footer-brand">
-        <div class="footer-logo">ELI<span>AR</span></div>
+        <img src="img/logo-1.jpg" alt="ELIAR" style="height:38px;width:auto;mix-blend-mode:multiply;border-radius:4px;">
         <p>Marca de tecnología premium con base en Medellín, Colombia. Accesorios que elevan tu experiencia diaria.</p>
         <div class="social-links">
           <!-- Instagram -->
@@ -1403,6 +1486,18 @@
 </a>
 
 <script>
+  // ─── PAGE LOADER ───
+  const loader = document.getElementById('page-loader');
+  const hideLoader = () => {
+    setTimeout(() => loader.classList.add('hidden'), 1900);
+  };
+  if (document.readyState === 'complete') {
+    hideLoader();
+  } else {
+    window.addEventListener('load', hideLoader);
+    setTimeout(hideLoader, 3500); // fallback máximo 3.5s
+  }
+
   // Scroll reveal
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
