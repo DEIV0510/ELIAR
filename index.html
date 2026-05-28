@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ELIAR — Eleva tu Nivel</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%231229E8'/><text x='16' y='23' font-family='Arial Black,sans-serif' font-weight='900' font-size='22' fill='white' text-anchor='middle'>E</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -329,18 +330,11 @@
     }
     .marquee-inner {
       display: flex;
-      width: max-content;
       will-change: transform;
       backface-visibility: hidden;
       -webkit-backface-visibility: hidden;
-      transform: translateZ(0);
-      animation: marquee 28s linear infinite;
     }
-    .marquee-inner:hover { animation-play-state: paused; }
-    .marquee-set {
-      display: flex;
-      flex-shrink: 0;
-    }
+    .marquee-set { display: flex; flex-shrink: 0; }
     .marquee-item {
       display: flex; align-items: center; gap: 16px;
       padding: 0 32px; white-space: nowrap;
@@ -351,10 +345,6 @@
     }
     .marquee-item svg { color: var(--blue); opacity: 0.7; flex-shrink: 0; }
     .marquee-dot { width:4px; height:4px; background: var(--blue); border-radius:50%; opacity:0.5; }
-    @keyframes marquee {
-      from { transform: translate3d(0, 0, 0); }
-      to   { transform: translate3d(-50%, 0, 0); }
-    }
 
     /* ─── SECTION BASE ───────────────────────────── */
     section { padding: 100px 24px; }
@@ -769,12 +759,97 @@
       .hero-actions { flex-direction: column; align-items: center; }
       .btn-primary, .btn-outline { width:100%; justify-content:center; max-width:300px; }
     }
+    /* ─── LOADER ─────────────────────────────────── */
+    #loader {
+      position: fixed; inset: 0; z-index: 9000;
+      background: #060D1A;
+      display: flex; align-items: center; justify-content: center;
+      transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), visibility 0.7s;
+    }
+    #loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+    .loader-ring {
+      position: absolute; width: 220px; height: 220px;
+      border-radius: 50%; border: 1px solid rgba(18,41,232,0.12);
+    }
+    .loader-ring-spin {
+      position: absolute; width: 220px; height: 220px;
+      border-radius: 50%; border: 1.5px solid transparent;
+      border-top-color: var(--blue);
+      border-right-color: rgba(18,41,232,0.3);
+      animation: spin 1.4s linear infinite;
+    }
+    .loader-ring-spin2 {
+      position: absolute; width: 178px; height: 178px;
+      border-radius: 50%; border: 1px solid transparent;
+      border-bottom-color: rgba(18,41,232,0.45);
+      border-left-color: rgba(18,41,232,0.15);
+      animation: spin 2.4s linear infinite reverse;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loader-center {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 24px;
+    }
+    .loader-wordmark {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 54px; font-weight: 700; letter-spacing: -2px;
+    }
+    .loader-wordmark span {
+      display: inline-block;
+      background: linear-gradient(135deg, #fff 0%, #6C8EFF 60%, var(--blue) 100%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      opacity: 0; transform: translateY(18px);
+      animation: letter-in 0.45s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+    .loader-wordmark span:nth-child(1){ animation-delay:0.1s; }
+    .loader-wordmark span:nth-child(2){ animation-delay:0.2s; }
+    .loader-wordmark span:nth-child(3){ animation-delay:0.3s; }
+    .loader-wordmark span:nth-child(4){ animation-delay:0.38s; }
+    .loader-wordmark span:nth-child(5){ animation-delay:0.46s; }
+    @keyframes letter-in { to { opacity:1; transform:translateY(0); } }
+
+    .loader-bar-wrap {
+      width: 120px; height: 1.5px;
+      background: rgba(255,255,255,0.07); border-radius: 2px; overflow: hidden;
+    }
+    .loader-bar {
+      height: 100%; width: 0;
+      background: linear-gradient(90deg, var(--blue), #6C8EFF);
+      animation: load-bar 1.3s 0.5s cubic-bezier(0.4,0,0.2,1) forwards;
+    }
+    @keyframes load-bar { to { width: 100%; } }
+
+    .loader-sub {
+      font-family: 'Inter', sans-serif; font-size: 10px;
+      font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase;
+      color: rgba(255,255,255,0.22);
+      opacity: 0; animation: fade-in 0.5s 0.55s forwards;
+    }
+    /* ─── END LOADER ─────────────────────────────── */
+
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation-duration:0.01ms !important; transition-duration:0.01ms !important; }
     }
   </style>
 </head>
 <body>
+
+  <!-- LOADER -->
+  <div id="loader" role="status" aria-label="Cargando ELIAR">
+    <div class="loader-ring"       aria-hidden="true"></div>
+    <div class="loader-ring-spin"  aria-hidden="true"></div>
+    <div class="loader-ring-spin2" aria-hidden="true"></div>
+    <div class="loader-center">
+      <div class="loader-wordmark" aria-hidden="true">
+        <span>E</span><span>L</span><span>I</span><span>A</span><span>R</span>
+      </div>
+      <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
+      <div class="loader-sub">Eleva tu nivel</div>
+    </div>
+  </div>
 
   <div id="scroll-progress" aria-hidden="true"></div>
   <div id="cursor-dot"  aria-hidden="true"></div>
@@ -1273,16 +1348,17 @@ document.addEventListener('click', e => {
   setTimeout(tick, 1200);
 })();
 
-// ── MARQUEE ───────────────────────────────────────
+// ── MARQUEE (RAF — sin titileo) ───────────────────
 (function() {
   const items = [
     'AirPods Premium','Diademas Max','Baterías Magnéticas',
     'Gadgets Inteligentes','Protectores Elite','Medellín Colombia',
     'Tecnología Premium','Envíos a Colombia','Garantía Confiable'
   ];
-  const set1 = document.getElementById('marqueeSet1');
-  const set2 = document.getElementById('marqueeSet2');
-  const icon = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`;
+  const inner = document.getElementById('marqueeInner');
+  const set1  = document.getElementById('marqueeSet1');
+  const set2  = document.getElementById('marqueeSet2');
+  const icon  = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`;
 
   function buildSet(container) {
     items.forEach(txt => {
@@ -1292,9 +1368,43 @@ document.addEventListener('click', e => {
       container.appendChild(div);
     });
   }
-
   buildSet(set1);
-  buildSet(set2); // exact clone — guarantees seamless -50% loop
+  buildSet(set2);
+
+  // RAF-based: no CSS animation = no flicker on loop
+  let pos = 0;
+  let paused = false;
+  let setW = 0;
+
+  // measure after fonts load
+  function startMarquee() {
+    setW = set1.offsetWidth;
+    if (!setW) { requestAnimationFrame(startMarquee); return; }
+    inner.addEventListener('mouseenter', () => paused = true);
+    inner.addEventListener('mouseleave', () => paused = false);
+    tick();
+  }
+
+  function tick() {
+    if (!paused) {
+      pos -= 0.55;               // speed: px per frame
+      if (pos <= -setW) pos = 0; // reset at exactly one set width — no gap, no overlap
+      inner.style.transform = `translate3d(${pos}px,0,0)`;
+    }
+    requestAnimationFrame(tick);
+  }
+
+  document.fonts.ready.then(startMarquee);
+})();
+
+// ── LOADER ────────────────────────────────────────
+(function() {
+  const loader = document.getElementById('loader');
+  // Hide after animation completes (bar takes ~1.8s total)
+  setTimeout(() => {
+    loader.classList.add('hidden');
+    setTimeout(() => loader.remove(), 700);
+  }, 1900);
 })();
 
 // ── INTERSECTION OBSERVER (REVEAL) ────────────────
