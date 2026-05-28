@@ -327,12 +327,20 @@
       border-top: 1px solid rgba(255,255,255,0.05);
       border-bottom: 1px solid rgba(255,255,255,0.05);
     }
-    .marquee-track {
-      display: flex; gap: 0;
-      animation: marquee 24s linear infinite;
+    .marquee-inner {
+      display: flex;
       width: max-content;
+      will-change: transform;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      transform: translateZ(0);
+      animation: marquee 28s linear infinite;
     }
-    .marquee-track:hover { animation-play-state: paused; }
+    .marquee-inner:hover { animation-play-state: paused; }
+    .marquee-set {
+      display: flex;
+      flex-shrink: 0;
+    }
     .marquee-item {
       display: flex; align-items: center; gap: 16px;
       padding: 0 32px; white-space: nowrap;
@@ -344,8 +352,8 @@
     .marquee-item svg { color: var(--blue); opacity: 0.7; flex-shrink: 0; }
     .marquee-dot { width:4px; height:4px; background: var(--blue); border-radius:50%; opacity:0.5; }
     @keyframes marquee {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-50%); }
+      from { transform: translate3d(0, 0, 0); }
+      to   { transform: translate3d(-50%, 0, 0); }
     }
 
     /* ─── SECTION BASE ───────────────────────────── */
@@ -826,7 +834,10 @@
 
   <!-- MARQUEE -->
   <div class="marquee-section" aria-hidden="true">
-    <div class="marquee-track" id="marqueeTrack"></div>
+    <div class="marquee-inner" id="marqueeInner">
+      <div class="marquee-set" id="marqueeSet1"></div>
+      <div class="marquee-set" id="marqueeSet2"></div>
+    </div>
   </div>
 
   <!-- PRODUCTS -->
@@ -1269,16 +1280,21 @@ document.addEventListener('click', e => {
     'Gadgets Inteligentes','Protectores Elite','Medellín Colombia',
     'Tecnología Premium','Envíos a Colombia','Garantía Confiable'
   ];
-  const track = document.getElementById('marqueeTrack');
-  const iconSvg = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`;
+  const set1 = document.getElementById('marqueeSet1');
+  const set2 = document.getElementById('marqueeSet2');
+  const icon = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`;
 
-  // duplicate for seamless loop
-  [...items, ...items].forEach(txt => {
-    const div = document.createElement('div');
-    div.className = 'marquee-item';
-    div.innerHTML = `${iconSvg} ${txt} <span class="marquee-dot"></span>`;
-    track.appendChild(div);
-  });
+  function buildSet(container) {
+    items.forEach(txt => {
+      const div = document.createElement('div');
+      div.className = 'marquee-item';
+      div.innerHTML = `${icon} ${txt} <span class="marquee-dot"></span>`;
+      container.appendChild(div);
+    });
+  }
+
+  buildSet(set1);
+  buildSet(set2); // exact clone — guarantees seamless -50% loop
 })();
 
 // ── INTERSECTION OBSERVER (REVEAL) ────────────────
