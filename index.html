@@ -199,6 +199,7 @@
       position: absolute; inset: 0;
       width: 100%; height: 100%;
       pointer-events: none; z-index: 0;
+      transform: translateZ(0);
     }
     .hero-content { position: relative; z-index: 2; max-width: 820px; }
 
@@ -306,10 +307,10 @@
       animation: scroll-line 1.8s ease-in-out infinite;
     }
     @keyframes scroll-line {
-      0%   { transform: scaleY(0); transform-origin: top; }
-      50%  { transform: scaleY(1); transform-origin: top; }
-      51%  { transform: scaleY(1); transform-origin: bottom; }
-      100% { transform: scaleY(0); transform-origin: bottom; }
+      0%   { clip-path: inset(0 0 100% 0); }
+      45%  { clip-path: inset(0 0 0% 0); }
+      55%  { clip-path: inset(0 0 0% 0); }
+      100% { clip-path: inset(0 0 100% 0); }
     }
 
     @keyframes fade-up {
@@ -448,17 +449,18 @@
     /* Scan line effect */
     .product-card .scan-line {
       position: absolute; left: 0; right: 0;
-      height: 1px; background: linear-gradient(90deg, transparent, rgba(18,41,232,0.4), transparent);
+      height: 2px; background: linear-gradient(90deg, transparent, rgba(18,41,232,0.4), transparent);
       top: 0; opacity: 0;
       transition: none;
+      transform: translateY(-2px);
     }
     .product-card:hover .scan-line {
       opacity: 1;
-      animation: scan 1.2s ease-in-out;
+      animation: scan 1.2s ease-in-out forwards;
     }
     @keyframes scan {
-      from { top: 0; opacity: 0.8; }
-      to   { top: 100%; opacity: 0; }
+      from { transform: translateY(0);    opacity: 0.8; }
+      to   { transform: translateY(600px); opacity: 0; }
     }
 
     /* ─── STATS ──────────────────────────────────── */
@@ -606,6 +608,7 @@
       position: absolute; inset: 0;
       width: 100%; height: 100%;
       pointer-events: none; z-index: 0; opacity: 0.6;
+      transform: translateZ(0);
     }
     .cta-content { position: relative; z-index: 2; max-width: 640px; margin: 0 auto; }
 
@@ -705,7 +708,7 @@
       border: 2px solid rgba(37,211,102,0.4);
       animation: ripple 2.5s ease-out infinite;
     }
-    @keyframes ripple { 0%{transform:scale(1);opacity:1} 100%{transform:scale(1.6);opacity:0} }
+    @keyframes ripple { 0%{transform:scale(1);opacity:0} 8%{opacity:0.7} 100%{transform:scale(1.7);opacity:0} }
     @keyframes pop-in  { from{transform:scale(0);opacity:0} to{transform:scale(1);opacity:1} }
 
     /* ─── REVEAL ─────────────────────────────────── */
@@ -1376,9 +1379,9 @@ document.addEventListener('click', e => {
   let paused = false;
   let setW = 0;
 
-  // measure after fonts load
+  // measure after fonts load — getBoundingClientRect gives sub-pixel precision
   function startMarquee() {
-    setW = set1.offsetWidth;
+    setW = set1.getBoundingClientRect().width;
     if (!setW) { requestAnimationFrame(startMarquee); return; }
     inner.addEventListener('mouseenter', () => paused = true);
     inner.addEventListener('mouseleave', () => paused = false);
@@ -1387,9 +1390,9 @@ document.addEventListener('click', e => {
 
   function tick() {
     if (!paused) {
-      pos -= 0.55;               // speed: px per frame
-      if (pos <= -setW) pos = 0; // reset at exactly one set width — no gap, no overlap
-      inner.style.transform = `translate3d(${pos}px,0,0)`;
+      pos -= 0.55;
+      if (pos <= -setW) pos += setW; // += setW handles any overshoot, no gap
+      inner.style.transform = `translate3d(${Math.round(pos)}px,0,0)`;
     }
     requestAnimationFrame(tick);
   }
