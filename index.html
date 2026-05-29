@@ -1026,6 +1026,147 @@
   .reveal-delay-4 { transition-delay: 0.4s; }
   .reveal-delay-5 { transition-delay: 0.5s; }
 
+  /* ─── SCROLL PROGRESS BAR ─── */
+  #scroll-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    width: 0%;
+    background: linear-gradient(90deg, var(--blue) 0%, #6C83FF 100%);
+    z-index: 9998;
+    transition: width 0.1s linear;
+    border-radius: 0 2px 2px 0;
+  }
+
+  /* ─── HERO ORBS ─── */
+  .hero-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    animation: orbFloat 8s ease-in-out infinite;
+  }
+  .hero-orb-1 {
+    width: 500px; height: 500px;
+    background: rgba(18,41,232,0.07);
+    top: -120px; right: -100px;
+    animation-delay: 0s;
+  }
+  .hero-orb-2 {
+    width: 360px; height: 360px;
+    background: rgba(108,131,255,0.09);
+    bottom: -80px; left: -80px;
+    animation-delay: 3s;
+  }
+  @keyframes orbFloat {
+    0%,100% { transform: translateY(0) scale(1); }
+    50%      { transform: translateY(-30px) scale(1.06); }
+  }
+
+  /* ─── PRODUCTS DARK CATALOG ─── */
+  #products {
+    background: linear-gradient(170deg, #0A1628 0%, #0D1F3C 60%, #111F4D 100%) !important;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #products::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 900px; height: 600px;
+    background: radial-gradient(ellipse, rgba(18,41,232,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  #products .section-header h2   { color: #FFFFFF; }
+  #products .section-header p    { color: rgba(255,255,255,0.55); }
+  #products .section-tag         { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7); }
+  #products .section-header      { position: relative; z-index: 1; }
+  #products .products-grid       { position: relative; z-index: 1; }
+  #products .carousel-dots       { position: relative; z-index: 1; }
+
+  .product-card {
+    background: rgba(255,255,255,0.06) !important;
+    border: 1px solid rgba(255,255,255,0.1) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .product-card:hover {
+    background: rgba(255,255,255,0.10) !important;
+    border-color: rgba(18,41,232,0.5) !important;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(18,41,232,0.3) !important;
+  }
+
+  .product-info h3  { color: #FFFFFF !important; }
+  .product-info p   { color: rgba(255,255,255,0.6) !important; }
+  .product-cat      { color: #8FA3FF !important; }
+
+  /* Shine sweep on product images */
+  .product-img-wrap {
+    position: relative;
+    overflow: hidden;
+  }
+  .product-img-wrap::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.18) 50%, transparent 60%);
+    transform: translateX(-100%);
+    transition: none;
+  }
+  .product-card:hover .product-img-wrap::after {
+    transform: translateX(100%);
+    transition: transform 0.6s ease;
+  }
+
+  /* ─── CATALOG MOBILE FADE (override) ─── */
+  @media (max-width: 768px) {
+    #products .carousel-wrap::after {
+      background: linear-gradient(to right, transparent, rgba(13,31,60,0.95));
+    }
+  }
+
+  /* ─── ASPIRATIONAL STATS COUNTER ─── */
+  .aspire-stat strong {
+    display: block;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ─── CTA GLOW PULSE ─── */
+  .btn-wa-lg {
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-wa-lg::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 100px;
+    background: linear-gradient(90deg, #25D366, #20E070, #25D366);
+    background-size: 200% 100%;
+    animation: btnGlow 2.5s linear infinite;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: -1;
+  }
+  .btn-wa-lg:hover::before { opacity: 1; }
+  @keyframes btnGlow {
+    0%   { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+  }
+
+  /* ─── HERO MOBILE FIX ─── */
+  @media (max-width: 768px) {
+    #hero {
+      min-height: unset !important;
+      padding-bottom: 50px !important;
+    }
+    .hero-visual { order: 1; }
+  }
+
   /* ─── CAROUSEL MOBILE ─── */
   .carousel-wrap {
     position: relative;
@@ -1052,16 +1193,41 @@
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: var(--gray-200);
-    transition: all 0.3s;
+    background: rgba(255,255,255,0.3);
+    border: none;
     cursor: pointer;
+    padding: 0;
+    transition: all 0.3s;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
   }
 
   .carousel-dot.active {
-    background: var(--navy);
-    width: 20px;
+    width: 28px;
     border-radius: 3px;
+    background: rgba(255,255,255,0.25);
   }
+
+  .carousel-dot.active::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: #FFFFFF;
+    border-radius: 3px;
+    animation: dotFill 3.1s linear forwards;
+    transform-origin: left;
+  }
+
+  @keyframes dotFill {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+  }
+
+  /* Dots color adapt: white on dark (products), navy on light (benefits) */
+  #benefits .carousel-dot          { background: var(--gray-200); }
+  #benefits .carousel-dot.active   { background: var(--gray-200); }
+  #benefits .carousel-dot.active::after { background: var(--navy); }
 
   /* ─── RESPONSIVE ─── */
   @media (max-width: 1024px) {
@@ -1182,6 +1348,8 @@
 </head>
 <body>
 
+<div id="scroll-bar"></div>
+
 <!-- ─── PAGE LOADER ─── -->
 <div id="page-loader" role="status" aria-label="Cargando ELIAR">
   <img class="loader-logo" src="img/logo.png" alt="ELIAR">
@@ -1209,6 +1377,8 @@
 
 <!-- ─── HERO ─── -->
 <section id="hero">
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
   <div class="hero-content">
     <div class="hero-tag">
       <svg width="10" height="10" fill="currentColor" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4"/></svg>
@@ -1436,16 +1606,16 @@
       <p>En ELIAR seleccionamos accesorios que combinan diseño, utilidad y estilo para que cada detalle de tu rutina se vea y se sienta mejor.</p>
       <div class="aspire-stats">
         <div class="aspire-stat">
-          <strong>100%</strong>
+          <strong>0%</strong>
           <span>Calidad garantizada</span>
         </div>
         <div class="aspire-stat">
-          <strong>ANC</strong>
-          <span>Cancelación activa</span>
+          <strong>0dB</strong>
+          <span>Cancelación de ruido</span>
         </div>
         <div class="aspire-stat">
-          <strong>COL</strong>
-          <span>Envíos nacionales</span>
+          <strong>0h</strong>
+          <span>Batería continua</span>
         </div>
       </div>
       <a href="https://wa.me/573023594955" target="_blank" class="btn-wa">
@@ -1593,108 +1763,150 @@
 <script>
   // ─── PAGE LOADER ───
   const loader = document.getElementById('page-loader');
-  const hideLoader = () => {
-    setTimeout(() => loader.classList.add('hidden'), 1900);
-  };
-  if (document.readyState === 'complete') {
-    hideLoader();
-  } else {
-    window.addEventListener('load', hideLoader);
-    setTimeout(hideLoader, 3500); // fallback máximo 3.5s
-  }
+  const hideLoader = () => setTimeout(() => loader.classList.add('hidden'), 1900);
+  document.readyState === 'complete' ? hideLoader() : window.addEventListener('load', hideLoader);
+  setTimeout(hideLoader, 3500);
 
-  // Scroll reveal
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-  // Navbar scroll effect
-  const nav = document.querySelector('nav');
+  // ─── SCROLL PROGRESS BAR ───
+  const scrollBar = document.getElementById('scroll-bar');
   window.addEventListener('scroll', () => {
-    if (window.scrollY > 40) {
-      nav.style.background = 'rgba(255,255,255,0.97)';
-      nav.style.boxShadow = '0 2px 20px rgba(0,0,0,0.08)';
-    } else {
-      nav.style.background = 'rgba(255,255,255,0.85)';
-      nav.style.boxShadow = 'none';
-    }
+    const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100;
+    scrollBar.style.width = pct + '%';
   }, { passive: true });
 
-  // Mobile menu toggle
-  const menuBtn = document.querySelector('.nav-menu-btn');
+  // ─── SCROLL REVEAL ───
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+  // ─── NAVBAR ───
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    nav.style.background = window.scrollY > 40 ? 'rgba(255,255,255,0.97)' : 'rgba(255,255,255,0.85)';
+    nav.style.boxShadow  = window.scrollY > 40 ? '0 2px 20px rgba(0,0,0,0.08)' : 'none';
+  }, { passive: true });
+
+  // ─── MOBILE MENU ───
+  const menuBtn  = document.querySelector('.nav-menu-btn');
   const navLinks = document.querySelector('.nav-links');
   menuBtn.addEventListener('click', () => {
     const open = navLinks.style.display === 'flex';
-    navLinks.style.cssText = open
-      ? ''
-      : 'display:flex;flex-direction:column;position:absolute;top:64px;left:0;right:0;background:rgba(255,255,255,0.98);backdrop-filter:blur(20px);padding:1.5rem 5%;gap:1.25rem;border-bottom:1px solid #E5E7EB;z-index:99;';
+    navLinks.style.cssText = open ? '' :
+      'display:flex;flex-direction:column;position:absolute;top:64px;left:0;right:0;background:rgba(255,255,255,0.98);backdrop-filter:blur(20px);padding:1.5rem 5%;gap:1.25rem;border-bottom:1px solid #E5E7EB;z-index:99;';
   });
 
-  // ─── CAROUSEL DOTS ───
-  function initCarousel(gridSel, dotsSel) {
-    const grid = document.querySelector(gridSel);
+  // ─── CAROUSEL WITH AUTO-PLAY ───
+  function initCarousel(gridSel, dotsSel, autoInterval) {
+    const grid   = document.querySelector(gridSel);
     const dotsEl = document.getElementById(dotsSel);
     if (!grid || !dotsEl) return;
 
-    const cards = Array.from(grid.children).filter(el => el.tagName !== 'DIV' || el.className !== '');
-    const count = cards.filter(c => !c.style.flex || c.style.flex !== '0 0 0px').length;
+    const mq   = window.matchMedia('(max-width: 768px)');
+    let dots   = [], timer = null, paused = false, currentIdx = 0;
 
-    // Only activate on mobile
-    const mq = window.matchMedia('(max-width: 768px)');
-    let dots = [];
+    function getItems() { return Array.from(grid.querySelectorAll('.benefit-card, .product-card')); }
+
+    function scrollTo(idx) {
+      const items = getItems();
+      if (!items[idx]) return;
+      const card = items[idx];
+      grid.scrollTo({ left: card.offsetLeft - grid.offsetLeft, behavior: 'smooth' });
+      currentIdx = idx;
+    }
 
     function build() {
+      clearInterval(timer);
       if (!mq.matches) { dotsEl.innerHTML = ''; return; }
-      const items = Array.from(grid.querySelectorAll('.benefit-card, .product-card'));
+      const items = getItems();
       dotsEl.innerHTML = '';
       dots = items.map((_, i) => {
         const d = document.createElement('button');
         d.className = 'carousel-dot' + (i === 0 ? ' active' : '');
-        d.setAttribute('aria-label', `Ir al elemento ${i + 1}`);
-        d.addEventListener('click', () => {
-          const card = items[i];
-          grid.scrollTo({ left: card.offsetLeft - grid.offsetLeft - (grid.clientWidth - card.offsetWidth) / 2, behavior: 'smooth' });
-        });
+        d.setAttribute('aria-label', `Elemento ${i + 1}`);
+        d.addEventListener('click', () => { scrollTo(i); resetTimer(); });
         dotsEl.appendChild(d);
         return d;
       });
+      startTimer();
     }
 
-    function update() {
+    function updateDots() {
       if (!mq.matches) return;
-      const items = Array.from(grid.querySelectorAll('.benefit-card, .product-card'));
-      const scrollCenter = grid.scrollLeft + grid.clientWidth / 2;
+      const items = getItems();
+      const center = grid.scrollLeft + grid.clientWidth / 2;
       let closest = 0, minDist = Infinity;
       items.forEach((card, i) => {
-        const cardCenter = card.offsetLeft - grid.offsetLeft + card.offsetWidth / 2;
-        const dist = Math.abs(scrollCenter - cardCenter);
-        if (dist < minDist) { minDist = dist; closest = i; }
+        const c = card.offsetLeft - grid.offsetLeft + card.offsetWidth / 2;
+        if (Math.abs(center - c) < minDist) { minDist = Math.abs(center - c); closest = i; }
       });
+      currentIdx = closest;
       dots.forEach((d, i) => d.classList.toggle('active', i === closest));
+    }
+
+    function advance() {
+      if (paused) return;
+      const items = getItems();
+      scrollTo((currentIdx + 1) % items.length);
+    }
+
+    function startTimer() {
+      clearInterval(timer);
+      timer = setInterval(advance, autoInterval || 3200);
+    }
+
+    function resetTimer() { paused = false; startTimer(); }
+
+    function pauseTemp() {
+      paused = true;
+      clearInterval(timer);
+      setTimeout(resetTimer, 5000);
     }
 
     build();
     mq.addEventListener('change', build);
-    grid.addEventListener('scroll', update, { passive: true });
+    grid.addEventListener('scroll', updateDots, { passive: true });
+    grid.addEventListener('touchstart', pauseTemp, { passive: true });
+    grid.addEventListener('mousedown',  pauseTemp, { passive: true });
   }
 
-  initCarousel('.benefits-grid', 'benefits-dots');
-  initCarousel('.products-grid', 'products-dots');
+  initCarousel('.benefits-grid', 'benefits-dots', 3500);
+  initCarousel('.products-grid', 'products-dots', 3000);
 
-  // Hero parallax on scroll
+  // ─── COUNT-UP STATS ───
+  function countUp(el, target, suffix, duration) {
+    let start = 0, step = target / (duration / 16);
+    const run = () => {
+      start = Math.min(start + step, target);
+      el.textContent = Math.round(start) + suffix;
+      if (start < target) requestAnimationFrame(run);
+    };
+    requestAnimationFrame(run);
+  }
+
+  const statsObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      statsObs.unobserve(e.target);
+      const stats = e.target.querySelectorAll('.aspire-stat strong');
+      const data  = [{ val: 100, suffix: '%' }, { val: 40, suffix: 'dB' }, { val: 32, suffix: 'h' }];
+      stats.forEach((el, i) => {
+        if (data[i]) countUp(el, data[i].val, data[i].suffix, 1200);
+      });
+    });
+  }, { threshold: 0.5 });
+
+  const aspireStats = document.querySelector('.aspire-stats');
+  if (aspireStats) statsObs.observe(aspireStats);
+
+  // ─── HERO PARALLAX ───
   const heroImg = document.querySelector('.hero-img-wrap img');
-  window.addEventListener('scroll', () => {
-    if (window.scrollY < window.innerHeight) {
-      heroImg.style.transform = `scale(1) translateY(${window.scrollY * 0.08}px)`;
-    }
-  }, { passive: true });
+  if (heroImg) {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY < window.innerHeight)
+        heroImg.style.transform = `scale(1) translateY(${window.scrollY * 0.08}px)`;
+    }, { passive: true });
+  }
 </script>
 </body>
 </html>
