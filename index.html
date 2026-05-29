@@ -50,6 +50,37 @@
 
   a { text-decoration: none; color: inherit; }
 
+  /* ─── SCROLL PROGRESS ─── */
+  #scroll-progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    width: 0%;
+    background: linear-gradient(90deg, var(--blue) 0%, #6C83FF 60%, #A78BFA 100%);
+    z-index: 9998;
+    transition: width 0.1s linear;
+    box-shadow: 0 0 10px rgba(18,41,232,0.6);
+  }
+
+  /* ─── FLOATING ORBS ─── */
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(70px);
+    pointer-events: none;
+    opacity: 0.55;
+    animation: orbFloat 8s ease-in-out infinite;
+  }
+  .orb-1 { width: 420px; height: 420px; background: radial-gradient(circle, rgba(18,41,232,0.22) 0%, transparent 70%); top: -80px; right: -80px; animation-duration: 9s; }
+  .orb-2 { width: 300px; height: 300px; background: radial-gradient(circle, rgba(108,131,255,0.18) 0%, transparent 70%); bottom: 60px; left: -60px; animation-duration: 11s; animation-delay: -3s; }
+  .orb-3 { width: 200px; height: 200px; background: radial-gradient(circle, rgba(167,139,250,0.15) 0%, transparent 70%); top: 40%; right: 15%; animation-duration: 7s; animation-delay: -5s; }
+
+  @keyframes orbFloat {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33%       { transform: translate(20px, -30px) scale(1.05); }
+    66%       { transform: translate(-15px, 15px) scale(0.95); }
+  }
+
   /* ─── NAVBAR ─── */
   nav {
     position: fixed;
@@ -192,7 +223,7 @@
     align-items: center;
     padding: 100px 5% 60px;
     gap: 4rem;
-    background: linear-gradient(160deg, #FFFFFF 0%, #F3F5FF 50%, #EEF1FF 100%);
+    background: linear-gradient(160deg, #FFFFFF 0%, #F0F3FF 45%, #E8EDFF 100%);
     position: relative;
     overflow: hidden;
   }
@@ -200,12 +231,21 @@
   #hero::before {
     content: '';
     position: absolute;
-    top: -200px;
-    right: -200px;
-    width: 700px;
-    height: 700px;
-    background: radial-gradient(circle, rgba(18,41,232,0.06) 0%, transparent 70%);
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 80% 20%, rgba(18,41,232,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 10% 80%, rgba(108,131,255,0.06) 0%, transparent 60%);
     pointer-events: none;
+  }
+
+  /* Animated noise grain overlay */
+  #hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    opacity: 0.4;
   }
 
   .hero-tag {
@@ -455,45 +495,86 @@
 
   /* ─── PRODUCTS ─── */
   #products {
-    background: linear-gradient(180deg, #F9FAFB 0%, #FFFFFF 100%);
+    background: linear-gradient(170deg, #07101F 0%, #0A1628 40%, #0D1E3C 100%);
+    position: relative;
+    overflow: hidden;
   }
+
+  #products::before {
+    content: '';
+    position: absolute;
+    top: -200px; left: 50%;
+    transform: translateX(-50%);
+    width: 900px; height: 500px;
+    background: radial-gradient(ellipse, rgba(18,41,232,0.18) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  #products .section-tag {
+    background: rgba(18,41,232,0.25);
+    color: #8FA3FF;
+    border: 1px solid rgba(18,41,232,0.3);
+  }
+
+  #products .section-header h2 { color: var(--white); }
+  #products .section-header p  { color: rgba(255,255,255,0.55); }
 
   .products-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
+    gap: 1.25rem;
     max-width: 1100px;
     margin: 0 auto;
+    position: relative;
+    z-index: 1;
   }
 
   .product-card {
-    background: var(--white);
-    border: 1px solid var(--gray-100);
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
     border-radius: var(--radius-md);
     overflow: hidden;
     transition: var(--transition);
     display: flex;
     flex-direction: column;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
   }
 
   .product-card:hover {
     transform: translateY(-8px);
-    box-shadow: var(--shadow-lg);
-    border-color: var(--gray-200);
+    box-shadow: 0 24px 64px rgba(0,0,0,0.4), 0 0 0 1px rgba(18,41,232,0.4);
+    background: rgba(255,255,255,0.1);
   }
+
+  /* Shimmer shine on hover */
+  .product-img-wrap {
+    overflow: hidden;
+    position: relative;
+  }
+
+  .product-img-wrap::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 60%; height: 100%;
+    background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.18) 50%, transparent 60%);
+    transition: left 0.6s ease;
+    pointer-events: none;
+  }
+
+  .product-card:hover .product-img-wrap::after { left: 140%; }
 
   .product-img {
     width: 100%;
-    height: 260px;
+    height: 240px;
     object-fit: cover;
     object-position: center;
-    background: var(--gray-50);
+    background: rgba(255,255,255,0.05);
     transition: transform 0.6s cubic-bezier(0.4,0,0.2,1);
   }
 
   .product-card:hover .product-img { transform: scale(1.04); }
-
-  .product-img-wrap { overflow: hidden; }
 
   .product-info {
     padding: 1.5rem;
@@ -507,14 +588,14 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.07em;
-    color: var(--blue);
+    color: #8FA3FF;
     margin-bottom: 0.4rem;
   }
 
   .product-info h3 {
     font-size: 1.05rem;
     font-weight: 700;
-    color: var(--navy);
+    color: var(--white);
     letter-spacing: -0.02em;
     margin-bottom: 0.5rem;
     line-height: 1.3;
@@ -522,17 +603,38 @@
 
   .product-info p {
     font-size: 0.85rem;
-    color: var(--gray-600);
+    color: rgba(255,255,255,0.55);
     line-height: 1.6;
     flex: 1;
     margin-bottom: 1.25rem;
   }
 
+  /* Product badge */
+  .product-badge {
+    position: absolute;
+    top: 12px; left: 12px;
+    background: var(--blue);
+    color: white;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.65rem;
+    border-radius: 100px;
+    z-index: 2;
+    animation: pulseBadge 2.5s ease-in-out infinite;
+  }
+
+  @keyframes pulseBadge {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(18,41,232,0.5); }
+    50%       { box-shadow: 0 0 0 6px rgba(18,41,232,0); }
+  }
+
   .product-btn {
     width: 100%;
-    background: var(--navy);
+    background: rgba(18,41,232,0.85);
     color: var(--white);
-    border: none;
+    border: 1px solid rgba(18,41,232,0.5);
     border-radius: var(--radius-sm);
     padding: 0.75rem 1rem;
     font-family: 'Space Grotesk', sans-serif;
@@ -553,6 +655,64 @@
   }
 
   .product-btn svg { width: 16px; height: 16px; fill: currentColor; }
+
+  /* ─── BENEFIT CARD NUMBER ─── */
+  .benefit-num {
+    position: absolute;
+    top: 1.25rem; right: 1.25rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: rgba(18,41,232,0.06);
+    line-height: 1;
+    transition: color 0.3s;
+    pointer-events: none;
+  }
+
+  .benefit-card:hover .benefit-num { color: rgba(18,41,232,0.12); }
+
+  .benefit-card {
+    position: relative; /* needed for absolute num */
+  }
+
+  /* ─── STAT COUNT-UP ─── */
+  .aspire-stat strong {
+    display: block;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 0.25rem;
+    background: linear-gradient(135deg, #fff 0%, #8FA3FF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ─── CTA GLOW ─── */
+  .btn-wa-lg {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-wa-lg::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(90deg, #25D366, #20b858, #25D366);
+    background-size: 200%;
+    animation: btnGlow 2.5s linear infinite;
+    border-radius: 100px;
+    z-index: -1;
+    filter: blur(8px);
+    opacity: 0.7;
+  }
+
+  @keyframes btnGlow {
+    0%   { background-position: 0%; }
+    100% { background-position: 200%; }
+  }
 
   /* ─── ASPIRATIONAL ─── */
   #aspirational {
@@ -1244,16 +1404,18 @@
   @media (max-width: 768px) {
     #hero {
       grid-template-columns: 1fr;
-      padding: 90px 5% 60px;
+      min-height: unset;
+      padding: 90px 5% 50px;
       text-align: center;
+      gap: 2rem;
     }
 
     .hero-content p { max-width: 100%; }
     .hero-actions { justify-content: center; }
-    .hero-visual { order: -1; }
-    .hero-img-wrap img { height: 420px; }
+    .hero-visual { order: 1; }
+    .hero-img-wrap img { height: 340px; }
     .hero-float-badge { display: none; }
-    .hero-float-badge2 { top: 16px; right: 8px; }
+    .hero-float-badge2 { top: 12px; right: 8px; }
 
     .nav-links { display: none; }
     .nav-menu-btn { display: flex; }
@@ -1292,6 +1454,7 @@
     /* ── Products carousel ── */
     #products { padding-left: 0; padding-right: 0; }
     #products .section-header { padding: 0 5%; }
+    #products .carousel-wrap::after { background: linear-gradient(to right, transparent, rgba(10,22,40,0.9)); }
 
     .products-grid {
       display: flex;
@@ -1354,6 +1517,8 @@
 
 <div id="scroll-bar"></div>
 
+<div id="scroll-progress"></div>
+
 <!-- ─── PAGE LOADER ─── -->
 <div id="page-loader" role="status" aria-label="Cargando ELIAR">
   <img class="loader-logo" src="img/logo.png" alt="ELIAR">
@@ -1381,8 +1546,9 @@
 
 <!-- ─── HERO ─── -->
 <section id="hero">
-  <div class="hero-orb hero-orb-1"></div>
-  <div class="hero-orb hero-orb-2"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
   <div class="hero-content">
     <div class="hero-tag">
       <svg width="10" height="10" fill="currentColor" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4"/></svg>
@@ -1426,46 +1592,40 @@
   </div>
   <div class="benefits-grid">
     <div class="benefit-card reveal reveal-delay-1">
-      <div class="benefit-icon">
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-      </div>
+      <span class="benefit-num">01</span>
+      <div class="benefit-icon"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
       <h3>Diseño Premium</h3>
-      <p>Accesorios seleccionados por su calidad visual y funcional. Cada producto que ofrecemos cumple con estándares de diseño elevados.</p>
+      <p>Accesorios seleccionados por su calidad visual y funcional. Cada producto cumple con estándares de diseño elevados.</p>
     </div>
     <div class="benefit-card reveal reveal-delay-2">
-      <div class="benefit-icon">
-        <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-      </div>
+      <span class="benefit-num">02</span>
+      <div class="benefit-icon"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
       <h3>Tecnología Funcional</h3>
-      <p>Cada producto está pensado para mejorar tu día a día: audio inmersivo, carga inalámbrica y accesorios que realmente usas.</p>
+      <p>Audio inmersivo, carga inalámbrica y accesorios pensados para mejorar cada momento de tu día.</p>
     </div>
     <div class="benefit-card reveal reveal-delay-3">
-      <div class="benefit-icon">
-        <svg viewBox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
-      </div>
+      <span class="benefit-num">03</span>
+      <div class="benefit-icon"><svg viewBox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg></div>
       <h3>Envíos en Colombia</h3>
-      <p>Entregamos en Medellín y toda Colombia. Tu pedido llega de forma segura, rápida y bien empacado hasta tu puerta.</p>
+      <p>Entregamos en Medellín y toda Colombia. Tu pedido llega seguro, rápido y bien empacado.</p>
     </div>
     <div class="benefit-card reveal reveal-delay-1">
-      <div class="benefit-icon">
-        <svg viewBox="0 0 24 24"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
-      </div>
+      <span class="benefit-num">04</span>
+      <div class="benefit-icon"><svg viewBox="0 0 24 24"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg></div>
       <h3>Atención por WhatsApp</h3>
-      <p>Resolvemos todas tus dudas antes de comprar. Asesoría personalizada, rápida y sin complicaciones.</p>
+      <p>Asesoría personalizada, rápida y sin complicaciones. Resolvemos todas tus dudas antes de comprar.</p>
     </div>
     <div class="benefit-card reveal reveal-delay-2">
-      <div class="benefit-icon">
-        <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
-      </div>
+      <span class="benefit-num">05</span>
+      <div class="benefit-icon"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg></div>
       <h3>Productos Seleccionados</h3>
       <p>No vendemos cualquier cosa. Cada accesorio pasa por un filtro de calidad antes de llegar a ti.</p>
     </div>
     <div class="benefit-card reveal reveal-delay-3">
-      <div class="benefit-icon">
-        <svg viewBox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
-      </div>
+      <span class="benefit-num">06</span>
+      <div class="benefit-icon"><svg viewBox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg></div>
       <h3>Estilo y Confianza</h3>
-      <p>ELIAR construye confianza producto a producto. Comprás con la seguridad de que recibirás exactamente lo que prometemos.</p>
+      <p>Comprás con la seguridad de recibir exactamente lo que prometemos. Producto a producto.</p>
     </div>
   </div>
   <div class="carousel-dots" id="benefits-dots"></div>
@@ -1482,6 +1642,7 @@
 
     <div class="product-card reveal reveal-delay-1">
       <div class="product-img-wrap">
+        <span class="product-badge">⭐ Más vendido</span>
         <img class="product-img" src="img/producto-01.jpg" alt="AirPods inalámbricos ELIAR" loading="lazy">
       </div>
       <div class="product-info">
@@ -1765,6 +1926,87 @@
 </a>
 
 <script>
+  // ─── SCROLL PROGRESS BAR ───
+  const progressBar = document.getElementById('scroll-progress');
+  window.addEventListener('scroll', () => {
+    const total = document.documentElement.scrollHeight - window.innerHeight;
+    progressBar.style.width = (window.scrollY / total * 100) + '%';
+  }, { passive: true });
+
+  // ─── COUNT-UP ANIMATION ───
+  function countUp(el, target, suffix, duration) {
+    let start = 0;
+    const step = target / (duration / 16);
+    const run = () => {
+      start = Math.min(start + step, target);
+      el.textContent = (Number.isInteger(target) ? Math.floor(start) : start.toFixed(1)) + suffix;
+      if (start < target) requestAnimationFrame(run);
+    };
+    requestAnimationFrame(run);
+  }
+
+  const statsObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target.querySelector('strong');
+      if (!el) return;
+      const raw = el.dataset.target || el.textContent.trim();
+      const match = raw.match(/^([\d.]+)(.*)$/);
+      if (match) countUp(el, parseFloat(match[1]), match[2], 1400);
+      statsObserver.unobserve(entry.target);
+    });
+  }, { threshold: 0.6 });
+
+  document.querySelectorAll('.aspire-stat').forEach(el => {
+    const strong = el.querySelector('strong');
+    if (strong) strong.dataset.target = strong.textContent.trim();
+    statsObserver.observe(el);
+  });
+
+  // ─── AUTO-PLAY CAROUSEL ───
+  function autoPlay(gridSel, intervalMs) {
+    const grid = document.querySelector(gridSel);
+    if (!grid) return;
+    const mq = window.matchMedia('(max-width: 768px)');
+    let timer = null;
+    let paused = false;
+
+    function getCards() {
+      return Array.from(grid.querySelectorAll('.benefit-card, .product-card'));
+    }
+
+    function advance() {
+      if (paused) return;
+      const cards = getCards();
+      if (!cards.length) return;
+      const center = grid.scrollLeft + grid.clientWidth / 2;
+      let current = 0, minD = Infinity;
+      cards.forEach((c, i) => {
+        const d = Math.abs((c.offsetLeft - grid.offsetLeft + c.offsetWidth / 2) - center);
+        if (d < minD) { minD = d; current = i; }
+      });
+      const next = (current + 1) % cards.length;
+      grid.scrollTo({ left: cards[next].offsetLeft - grid.offsetLeft, behavior: 'smooth' });
+    }
+
+    function start() { if (!timer) timer = setInterval(advance, intervalMs); }
+    function stop()  { clearInterval(timer); timer = null; }
+
+    function onTouch() {
+      paused = true;
+      stop();
+      setTimeout(() => { paused = false; if (mq.matches) start(); }, 5000);
+    }
+
+    grid.addEventListener('touchstart', onTouch, { passive: true });
+    grid.addEventListener('mousedown',  onTouch, { passive: true });
+    if (mq.matches) start();
+    mq.addEventListener('change', e => { e.matches ? start() : stop(); });
+  }
+
+  autoPlay('.benefits-grid', 3200);
+  autoPlay('.products-grid', 3600);
+
   // ─── PAGE LOADER ───
   const loader = document.getElementById('page-loader');
   const hideLoader = () => setTimeout(() => loader.classList.add('hidden'), 1900);
