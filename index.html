@@ -3212,25 +3212,38 @@
     .nav-links { display: none; }
     .nav-menu-btn { display: flex; }
 
-    /* ── Benefits mobile: GRID VERTICAL ESTÁTICO ── */
-    #benefits { padding: 80px 5%; }
-    #benefits .section-header { padding: 0; }
+    /* ── Benefits mobile: CARRUSEL HORIZONTAL DESLIZABLE ── */
+    #benefits { padding-left: 0; padding-right: 0; }
+    #benefits .section-header { padding: 0 5%; }
 
     .benefits-grid {
-      display: grid !important;
-      grid-template-columns: 1fr !important;
+      display: flex !important;
+      flex-direction: row !important;
+      overflow-x: auto !important;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
       gap: 1rem !important;
-      padding: 0 !important;
-      overflow: visible !important;
-      max-width: 480px;
-      margin: 0 auto;
+      padding: 0.5rem 5% 1.5rem !important;
+      grid-template-columns: unset !important;
+      max-width: none !important;
+      align-items: stretch !important;
+    }
+
+    .benefits-grid::-webkit-scrollbar { display: none; }
+
+    .benefits-grid::after {
+      content: '';
+      flex: 0 0 calc(5% - 1rem);
     }
 
     .benefit-card {
-      flex: unset !important;
-      width: 100% !important;
-      max-width: 100% !important;
-      scroll-snap-align: unset !important;
+      flex: 0 0 78vw !important;
+      max-width: 300px !important;
+      width: auto !important;
+      scroll-snap-align: start !important;
     }
 
     /* ── Products mobile: CARRUSEL HORIZONTAL DESLIZABLE ── */
@@ -3251,6 +3264,7 @@
       padding: 0.5rem 5% 1.5rem !important;
       grid-template-columns: unset !important;
       max-width: none !important;
+      align-items: stretch !important;
     }
 
     .products-grid::-webkit-scrollbar { display: none; }
@@ -3268,6 +3282,21 @@
     }
 
     .product-img { height: 240px; }
+
+    /* ── FIX: cards en carrusel mobile no deben tener reveal transform ── */
+    .benefits-grid .reveal,
+    .products-grid .reveal,
+    .benefits-grid .benefit-card,
+    .products-grid .product-card {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+    /* mantener hover transitions */
+    .benefits-grid .benefit-card,
+    .products-grid .product-card {
+      transition: box-shadow 0.4s, border-color 0.4s !important;
+    }
 
     /* ── dots visibles en mobile ── */
     .carousel-dots { display: flex; }
@@ -4588,10 +4617,8 @@
     grid.addEventListener('mousedown',  pauseTemp, { passive: true });
   }
 
-  // benefits: vertical static, hide dots
-  const benefitsDots = document.getElementById('benefits-dots');
-  if (benefitsDots) benefitsDots.style.display = 'none';
-  // products: horizontal swipe carousel with dynamic dots
+  // benefits & products: horizontal swipe carousels with dynamic dots (NO autoplay)
+  initCarousel('.benefits-grid', 'benefits-dots', 0);
   initCarousel('.products-grid', 'products-dots', 0);
 
   // ─── COUNT-UP STATS ───
