@@ -3212,59 +3212,62 @@
     .nav-links { display: none; }
     .nav-menu-btn { display: flex; }
 
-    /* ── Benefits carousel ── */
-    #benefits { padding-left: 0; padding-right: 0; }
-    #benefits .section-header { padding: 0 5%; }
+    /* ── Benefits mobile: GRID VERTICAL ESTÁTICO ── */
+    #benefits { padding: 80px 5%; }
+    #benefits .section-header { padding: 0; }
 
     .benefits-grid {
-      display: flex;
-      flex-direction: row;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      scroll-behavior: smooth;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-      gap: 1rem;
-      padding: 0.5rem 5% 1.5rem;
-      grid-template-columns: unset;
-    }
-
-    .benefits-grid::-webkit-scrollbar { display: none; }
-
-    .benefits-grid::after {
-      content: '';
-      flex: 0 0 calc(5% - 1rem);
-    }
-
-    .benefit-card {
-      flex: 0 0 75vw;
-      max-width: 300px;
-      scroll-snap-align: start;
-    }
-
-    /* ── Products mobile: GRID VERTICAL ESTÁTICO (no carrusel) ── */
-    #products { padding: 80px 5%; }
-    #products .section-header { padding: 0; }
-
-    .products-grid {
       display: grid !important;
       grid-template-columns: 1fr !important;
-      gap: 1.25rem !important;
+      gap: 1rem !important;
       padding: 0 !important;
       overflow: visible !important;
       max-width: 480px;
       margin: 0 auto;
     }
 
-    .product-card {
+    .benefit-card {
       flex: unset !important;
       width: 100% !important;
       max-width: 100% !important;
       scroll-snap-align: unset !important;
     }
 
-    .product-img { height: 260px; }
+    /* ── Products mobile: CARRUSEL HORIZONTAL DESLIZABLE ── */
+    #products { padding-left: 0; padding-right: 0; }
+    #products .section-header { padding: 0 5%; }
+    #products .carousel-wrap::after { background: linear-gradient(to right, transparent, rgba(10,22,40,0.9)); }
+
+    .products-grid {
+      display: flex !important;
+      flex-direction: row !important;
+      overflow-x: auto !important;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      gap: 1rem !important;
+      padding: 0.5rem 5% 1.5rem !important;
+      grid-template-columns: unset !important;
+      max-width: none !important;
+    }
+
+    .products-grid::-webkit-scrollbar { display: none; }
+
+    .products-grid::after {
+      content: '';
+      flex: 0 0 calc(5% - 1rem);
+    }
+
+    .product-card {
+      flex: 0 0 78vw !important;
+      max-width: 300px !important;
+      width: auto !important;
+      scroll-snap-align: start !important;
+    }
+
+    .product-img { height: 240px; }
 
     /* ── dots visibles en mobile ── */
     .carousel-dots { display: flex; }
@@ -4203,8 +4206,8 @@
     mq.addEventListener('change', e => { e.matches ? start() : stop(); });
   }
 
-  autoPlay('.benefits-grid', 3200);
-  // products-grid: no autoplay (uses tabs filtering)
+  // benefits-grid: static vertical stack on mobile, no autoplay
+  // products-grid: horizontal swipeable but no autoplay
 
   // ─── PAGE LOADER with animated counter ───
   (function loader() {
@@ -4565,7 +4568,9 @@
 
     function startTimer() {
       clearInterval(timer);
-      timer = setInterval(advance, autoInterval || 3200);
+      // If interval is 0 or undefined as 0, skip autoplay entirely
+      if (!autoInterval || autoInterval <= 0) return;
+      timer = setInterval(advance, autoInterval);
     }
 
     function resetTimer() { paused = false; startTimer(); }
@@ -4573,7 +4578,7 @@
     function pauseTemp() {
       paused = true;
       clearInterval(timer);
-      setTimeout(resetTimer, 5000);
+      if (autoInterval > 0) setTimeout(resetTimer, 5000);
     }
 
     build();
@@ -4583,10 +4588,11 @@
     grid.addEventListener('mousedown',  pauseTemp, { passive: true });
   }
 
-  initCarousel('.benefits-grid', 'benefits-dots', 3500);
-  // products grid uses category tabs filter, no dot carousel needed
-  const productsDots = document.getElementById('products-dots');
-  if (productsDots) productsDots.style.display = 'none';
+  // benefits: vertical static, hide dots
+  const benefitsDots = document.getElementById('benefits-dots');
+  if (benefitsDots) benefitsDots.style.display = 'none';
+  // products: horizontal swipe carousel with dynamic dots
+  initCarousel('.products-grid', 'products-dots', 0);
 
   // ─── COUNT-UP STATS ───
   function countUp(el, target, suffix, duration) {
