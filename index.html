@@ -283,17 +283,7 @@
   /* ═══════════════════════════════════════════════════════════
      LIFESTYLE BANNER — primer impacto visual (persona usando productos)
      ═══════════════════════════════════════════════════════════ */
-  #lifestyle-banner {
-    position: relative;
-    width: 100%;
-    height: 88dvh;
-    min-height: 580px;
-    max-height: 880px;
-    overflow: hidden;
-    padding: 0;
-    background: var(--navy);
-    margin-top: 72px;
-  }
+  #lifestyle-banner { display: none; } /* sección eliminada */
 
   .lb-track-container {
     position: relative;
@@ -563,26 +553,28 @@
   /* ─── HERO ─── */
   #hero {
     min-height: 90dvh;
-    display: flex;
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
     align-items: center;
-    padding: 80px 5% 60px;
+    padding: 100px 5% 60px;
+    gap: 3rem;
     background-image: url('img/lifestyle-2.png');
     background-size: cover;
-    background-position: center right;
+    background-position: center;
     background-repeat: no-repeat;
     position: relative;
     overflow: hidden;
     color: white;
   }
 
-  /* Dark cinematic overlay */
+  /* Dark cinematic overlay (más fuerte a la izquierda para legibilidad del texto) */
   #hero::before {
     content: '';
     position: absolute;
     inset: 0;
     background:
-      linear-gradient(to right, rgba(5,11,23,0.92) 0%, rgba(5,11,23,0.7) 35%, rgba(5,11,23,0.25) 70%, rgba(5,11,23,0.45) 100%),
-      linear-gradient(to bottom, transparent 40%, rgba(5,11,23,0.55) 100%);
+      linear-gradient(to right, rgba(5,11,23,0.88) 0%, rgba(5,11,23,0.65) 40%, rgba(5,11,23,0.35) 75%, rgba(5,11,23,0.55) 100%),
+      linear-gradient(to bottom, transparent 60%, rgba(5,11,23,0.4) 100%);
     pointer-events: none;
     z-index: 1;
   }
@@ -592,9 +584,9 @@
     content: '';
     position: absolute;
     inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
     pointer-events: none;
-    opacity: 0.6;
+    opacity: 0.5;
     z-index: 2;
     mix-blend-mode: overlay;
   }
@@ -603,6 +595,11 @@
     position: relative;
     z-index: 3;
     max-width: 640px;
+  }
+
+  .hero-visual {
+    position: relative;
+    z-index: 3;
   }
 
   .hero-tag {
@@ -716,13 +713,14 @@
   .hero-img-wrap {
     position: relative;
     width: 100%;
-    max-width: 520px;
+    max-width: 460px;
+    margin-left: auto;
     border-radius: var(--radius-lg);
     overflow: hidden;
     box-shadow:
-      0 50px 100px rgba(10,22,40,0.15),
-      0 20px 40px rgba(10,22,40,0.08),
-      inset 0 0 0 1px rgba(255,255,255,0.5);
+      0 60px 120px rgba(0,0,0,0.45),
+      0 30px 60px rgba(0,0,0,0.25),
+      inset 0 0 0 1px rgba(255,255,255,0.15);
   }
 
   .hero-img-wrap::after {
@@ -3461,26 +3459,42 @@
       gap: 1rem;
     }
 
-    /* Hero mobile: imagen como fondo, texto centrado abajo */
+    /* Hero mobile: 1 col vertical, foto fondo + producto + orbits */
     #hero {
-      background-position: top center;
-      align-items: flex-end;
+      grid-template-columns: 1fr;
+      background-position: center;
       padding: 100px 5% 3rem;
-      min-height: 88dvh;
+      min-height: unset;
+      gap: 1.5rem;
     }
     #hero::before {
       background:
-        linear-gradient(to bottom, rgba(5,11,23,0.35) 0%, rgba(5,11,23,0.55) 50%, rgba(5,11,23,0.92) 100%);
+        linear-gradient(to bottom, rgba(5,11,23,0.5) 0%, rgba(5,11,23,0.65) 100%);
     }
-    .hero-content {
-      max-width: 100%;
-      text-align: left;
-    }
+    .hero-content { order: 1; max-width: 100%; }
     .hero-content p { max-width: 100%; }
-    .hero-trust {
-      max-width: 100%;
-      gap: 0.85rem;
+    .hero-visual {
+      order: 2;
+      padding: 1rem 0;
+      display: flex;
+      justify-content: center;
     }
+    .hero-img-wrap { max-width: 300px; width: 88%; margin: 0 auto; }
+    .hero-img-wrap img { height: 360px; }
+
+    /* Orbits mobile */
+    .hero-orbit-product-1 { top: 5px; left: -10px; width: 60px; height: 60px; }
+    .hero-orbit-product-2 { bottom: 60px; right: -10px; width: 60px; height: 60px; }
+    .hero-orbit-product-3 { top: 100px; right: -15px; width: 52px; height: 52px; }
+    .hero-orbit-price { top: 70px; left: -5px; padding: 0.55rem 0.85rem; }
+    .hero-orbit-price .now { font-size: 0.95rem; }
+    .hero-orbit-rating { top: -8px; right: 30px; padding: 0.45rem 0.75rem; font-size: 0.72rem; }
+    .hero-orbit-feature { bottom: 15px; left: 0; padding: 0.45rem 0.75rem 0.45rem 0.5rem; gap: 0.4rem; }
+    .hero-orbit-feature .pearl { width: 18px; height: 18px; }
+    .hero-orbit-feature .label { font-size: 0.52rem; }
+    .hero-orbit-feature .value { font-size: 0.72rem; }
+
+    .hero-trust { max-width: 100%; gap: 0.85rem; }
     .hero-trust-item strong { font-size: 1.2rem; }
     .hero-trust-item span { font-size: 0.65rem; }
 
@@ -3747,72 +3761,7 @@
   <span id="toast-msg">Producto agregado</span>
 </div>
 
-<!-- ─── LIFESTYLE BANNER (primer impacto visual) ─── -->
-<section id="lifestyle-banner" aria-label="Banner lifestyle ELIAR">
-  <div class="lb-track-container">
-    <div class="lb-track" id="lb-track">
-
-      <!-- Slide 1: AirPods Max -->
-      <div class="lb-slide active" data-slide="0">
-        <img class="lb-slide-img" src="img/lifestyle-1.jpg" alt="Persona usando diademas AirPods Max" loading="eager">
-        <div class="lb-slide-content">
-          <span class="lb-kicker">AirPods Max · Edición Premium</span>
-          <h1>Sentí cada <em>nota</em> como nunca</h1>
-          <p>Inmersión total con nuestras diademas premium. Disponibles en negro, plateado, naranja, azul y morado. Acabados de alta gama, cancelación activa y comodidad para todo el día.</p>
-          <div class="lb-actions">
-            <a href="#products" class="lb-cta">
-              Ver AirPods Max
-              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-            </a>
-            <a href="https://wa.me/573023594955?text=Hola%20ELIAR!%20Quiero%20saber%20sobre%20AirPods%20Max" target="_blank" class="lb-cta lb-cta-ghost">
-              Consultar
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Slide 2: AirPods 3/4 -->
-      <div class="lb-slide" data-slide="1">
-        <img class="lb-slide-img" src="img/lifestyle-3.jpg" alt="Mujer disfrutando del sonido con audífonos" loading="lazy">
-        <div class="lb-slide-content">
-          <span class="lb-kicker">AirPods · Serie 3 y 4</span>
-          <h1>Conexión <em>sin pausa</em></h1>
-          <p>Audífonos inalámbricos en acabado blanco con sonido envolvente y batería de larga duración. Para que la música nunca pare.</p>
-          <div class="lb-actions">
-            <a href="#products" class="lb-cta">
-              Explorar
-              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-            </a>
-            <a href="https://wa.me/573023594955" target="_blank" class="lb-cta lb-cta-ghost">
-              WhatsApp
-            </a>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <button class="lb-arrow prev" id="lb-prev" aria-label="Slide anterior">
-      <svg viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
-    </button>
-    <button class="lb-arrow next" id="lb-next" aria-label="Slide siguiente">
-      <svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
-    </button>
-
-    <div class="lb-counter">
-      <span class="current" id="lb-current">01</span>
-      <span class="divider"></span>
-      <span>02</span>
-    </div>
-
-    <div class="lb-dots" id="lb-dots">
-      <button class="lb-dot active" data-slide="0" aria-label="Slide 1"></button>
-      <button class="lb-dot" data-slide="1" aria-label="Slide 2"></button>
-    </div>
-  </div>
-</section>
-
-<!-- ─── HERO (foto mujer de fondo) ─── -->
+<!-- ─── HERO ─── -->
 <section id="hero">
   <div class="hero-content">
     <div class="hero-tag">
@@ -3847,6 +3796,44 @@
     </div>
   </div>
 
+  <div class="hero-visual">
+    <div class="hero-img-wrap">
+      <img src="img/producto-08.jpg" alt="AirPods Pro 2 — producto premium" loading="eager">
+    </div>
+
+    <!-- Orbit elements -->
+    <div class="hero-orbit hero-orbit-price">
+      <span class="label">Desde</span>
+      <span class="now">$89.900</span>
+      <span class="off">-31% OFF</span>
+    </div>
+
+    <a href="#products" class="hero-orbit hero-orbit-product hero-orbit-product-1" aria-label="Ver AirPods 3">
+      <img src="img/producto-01.jpg" alt="AirPods 3">
+    </a>
+
+    <a href="#products" class="hero-orbit hero-orbit-product hero-orbit-product-2" aria-label="Ver AirPods Max">
+      <img src="img/producto-02.jpg" alt="AirPods Max">
+    </a>
+
+    <a href="#products" class="hero-orbit hero-orbit-product hero-orbit-product-3" aria-label="Ver Batería MagSafe">
+      <img src="img/producto-10.jpg" alt="Batería MagSafe">
+    </a>
+
+    <div class="hero-orbit hero-orbit-rating">
+      <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+      4.9
+      <span style="color:var(--gray-400);font-weight:500;font-size:0.7rem;">/5</span>
+    </div>
+
+    <div class="hero-orbit hero-orbit-feature">
+      <span class="pearl"></span>
+      <div class="text">
+        <span class="label">Acabado</span>
+        <span class="value">Blanco Premium</span>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- ─── PROMO BANNER CAROUSEL ─── -->
