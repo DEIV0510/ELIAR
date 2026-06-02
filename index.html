@@ -280,13 +280,293 @@
     box-shadow: 0 12px 32px rgba(37,211,102,0.35);
   }
 
+  /* ═══════════════════════════════════════════════════════════
+     LIFESTYLE BANNER — primer impacto visual (persona usando productos)
+     ═══════════════════════════════════════════════════════════ */
+  #lifestyle-banner {
+    position: relative;
+    width: 100%;
+    height: 88dvh;
+    min-height: 580px;
+    max-height: 880px;
+    overflow: hidden;
+    padding: 0;
+    background: var(--navy);
+    margin-top: 72px;
+  }
+
+  .lb-track-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .lb-track {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .lb-slide {
+    min-width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .lb-slide-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: 0;
+    transform: scale(1);
+    transition: transform 8s ease-out;
+  }
+
+  .lb-slide.active .lb-slide-img {
+    transform: scale(1.08);
+  }
+
+  .lb-slide::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to right, rgba(5,11,23,0.92) 0%, rgba(5,11,23,0.65) 35%, rgba(5,11,23,0.2) 65%, rgba(5,11,23,0.4) 100%),
+      linear-gradient(to bottom, transparent 40%, rgba(5,11,23,0.55) 100%);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .lb-slide-content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 6%;
+    max-width: 680px;
+    color: white;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease 0.2s, transform 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
+  }
+
+  .lb-slide.active .lb-slide-content {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .lb-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    width: fit-content;
+  }
+
+  .lb-kicker::before {
+    content: '';
+    width: 36px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold));
+  }
+
+  .lb-slide h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(2.3rem, 5.5vw, 4.6rem);
+    font-weight: 700;
+    line-height: 1.02;
+    letter-spacing: -0.04em;
+    margin-bottom: 1.25rem;
+    color: white;
+    text-shadow: 0 4px 30px rgba(0,0,0,0.3);
+  }
+
+  .lb-slide h1 em {
+    font-style: normal;
+    background: linear-gradient(135deg, var(--gold) 0%, #F4E4B8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .lb-slide p {
+    font-size: clamp(0.98rem, 1.4vw, 1.15rem);
+    color: rgba(255,255,255,0.78);
+    line-height: 1.6;
+    margin-bottom: 2.25rem;
+    max-width: 520px;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.4);
+  }
+
+  .lb-actions {
+    display: flex;
+    gap: 0.85rem;
+    flex-wrap: wrap;
+  }
+
+  .lb-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: white;
+    color: var(--navy);
+    padding: 1.05rem 2.2rem;
+    border-radius: 100px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 14px 36px rgba(0,0,0,0.25);
+  }
+
+  .lb-cta:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 48px rgba(255,255,255,0.25);
+  }
+
+  .lb-cta-ghost {
+    background: rgba(255,255,255,0.08);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.25);
+    backdrop-filter: blur(10px);
+  }
+
+  .lb-cta-ghost:hover {
+    background: rgba(255,255,255,0.18);
+    border-color: white;
+    transform: translateY(-3px);
+  }
+
+  /* Controls */
+  .lb-dots {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 6;
+  }
+
+  .lb-dot {
+    width: 32px;
+    height: 3px;
+    border-radius: 100px;
+    background: rgba(255,255,255,0.3);
+    border: none;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .lb-dot::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; bottom: 0;
+    width: 0%;
+    background: var(--gold);
+    transition: width 0s;
+  }
+
+  .lb-dot.active {
+    background: rgba(255,255,255,0.15);
+    width: 64px;
+  }
+
+  .lb-dot.active::after {
+    width: 100%;
+    transition: width 5.4s linear;
+  }
+
+  .lb-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.18);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transition: all 0.35s;
+    z-index: 6;
+  }
+
+  .lb-arrow:hover {
+    background: rgba(255,255,255,0.22);
+    transform: translateY(-50%) scale(1.08);
+    border-color: rgba(255,255,255,0.4);
+  }
+
+  .lb-arrow.prev { left: 2rem; }
+  .lb-arrow.next { right: 2rem; }
+
+  .lb-arrow svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* Counter top-right */
+  .lb-counter {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.65);
+    z-index: 6;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .lb-counter .current {
+    color: white;
+    font-size: 0.9rem;
+  }
+
+  .lb-counter .divider {
+    width: 24px;
+    height: 1px;
+    background: rgba(255,255,255,0.3);
+  }
+
+  /* Adjust navbar when over banner */
+  nav { background: rgba(255,255,255,0.94); }
+  body.lb-active nav { background: rgba(255,255,255,0.85); }
+
   /* ─── HERO ─── */
   #hero {
-    min-height: 100dvh;
+    min-height: 90dvh;
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;
-    padding: 100px 5% 60px;
+    padding: 80px 5% 60px;
     gap: 4rem;
     background: linear-gradient(160deg, #FFFFFF 0%, #F0F3FF 45%, #E8EDFF 100%);
     position: relative;
@@ -3233,6 +3513,22 @@
     /* Cart panel mobile */
     .cart-panel { width: 100vw; }
 
+    /* Lifestyle banner mobile */
+    #lifestyle-banner { height: 88dvh; min-height: 540px; margin-top: 64px; }
+    .lb-slide-content { padding: 0 6%; max-width: 100%; }
+    .lb-slide::after {
+      background:
+        linear-gradient(to bottom, rgba(5,11,23,0.45) 0%, rgba(5,11,23,0.6) 60%, rgba(5,11,23,0.85) 100%);
+    }
+    .lb-slide-content { justify-content: flex-end; padding-bottom: 5rem; }
+    .lb-kicker { margin-bottom: 1rem; font-size: 0.65rem; letter-spacing: 0.28em; }
+    .lb-slide p { font-size: 0.95rem; margin-bottom: 1.5rem; }
+    .lb-actions { gap: 0.6rem; }
+    .lb-cta { padding: 0.85rem 1.5rem; font-size: 0.85rem; }
+    .lb-arrow { display: none; }
+    .lb-dots { bottom: 1.25rem; }
+    .lb-counter { top: 1.25rem; right: 1.25rem; font-size: 0.65rem; }
+
     /* Nav cart trigger mobile */
     .cart-trigger { margin-left: 0; }
 
@@ -3443,6 +3739,91 @@
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg>
   <span id="toast-msg">Producto agregado</span>
 </div>
+
+<!-- ─── LIFESTYLE BANNER (primer impacto visual) ─── -->
+<section id="lifestyle-banner" aria-label="Banner lifestyle ELIAR">
+  <div class="lb-track-container">
+    <div class="lb-track" id="lb-track">
+
+      <!-- Slide 1: Studio Max -->
+      <div class="lb-slide active" data-slide="0">
+        <img class="lb-slide-img" src="img/lifestyle-1.jpg" alt="Persona usando diademas Studio Max" loading="eager">
+        <div class="lb-slide-content">
+          <span class="lb-kicker">Studio Max · Edición Premium</span>
+          <h1>Sentí cada <em>nota</em> como nunca</h1>
+          <p>Inmersión total con nuestras diademas premium. Disponibles en negro, plateado, naranja, azul y morado. Acabados de alta gama, cancelación activa y comodidad para todo el día.</p>
+          <div class="lb-actions">
+            <a href="#products" class="lb-cta">
+              Ver Studio Max
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </a>
+            <a href="https://wa.me/573023594955?text=Hola%20ELIAR!%20Quiero%20saber%20sobre%20Studio%20Max" target="_blank" class="lb-cta lb-cta-ghost">
+              Consultar
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: Pro Audio 2 -->
+      <div class="lb-slide" data-slide="1">
+        <img class="lb-slide-img" src="img/lifestyle-2.jpg" alt="Persona usando audífonos en su día a día" loading="lazy">
+        <div class="lb-slide-content">
+          <span class="lb-kicker">Pro Audio 2 · Más vendido</span>
+          <h1>Acompañate del <em>mejor sonido</em></h1>
+          <p>Cancelación activa, audio nítido y diseño minimalista en acabado blanco premium. Pensado para tu rutina, tu trabajo, tu ritmo.</p>
+          <div class="lb-actions">
+            <a href="#featured" class="lb-cta">
+              Ver detalles
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </a>
+            <a href="#products" class="lb-cta lb-cta-ghost">
+              Catálogo completo
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: Sonic Air -->
+      <div class="lb-slide" data-slide="2">
+        <img class="lb-slide-img" src="img/lifestyle-3.jpg" alt="Mujer disfrutando del sonido con audífonos" loading="lazy">
+        <div class="lb-slide-content">
+          <span class="lb-kicker">Sonic Air · Serie 3 y 4</span>
+          <h1>Conexión <em>sin pausa</em></h1>
+          <p>Audífonos inalámbricos en acabado blanco con sonido envolvente y batería de larga duración. Para que la música nunca pare.</p>
+          <div class="lb-actions">
+            <a href="#products" class="lb-cta">
+              Explorar
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </a>
+            <a href="https://wa.me/573023594955" target="_blank" class="lb-cta lb-cta-ghost">
+              WhatsApp
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <button class="lb-arrow prev" id="lb-prev" aria-label="Slide anterior">
+      <svg viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
+    </button>
+    <button class="lb-arrow next" id="lb-next" aria-label="Slide siguiente">
+      <svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+    </button>
+
+    <div class="lb-counter">
+      <span class="current" id="lb-current">01</span>
+      <span class="divider"></span>
+      <span>03</span>
+    </div>
+
+    <div class="lb-dots" id="lb-dots">
+      <button class="lb-dot active" data-slide="0" aria-label="Slide 1"></button>
+      <button class="lb-dot" data-slide="1" aria-label="Slide 2"></button>
+      <button class="lb-dot" data-slide="2" aria-label="Slide 3"></button>
+    </div>
+  </div>
+</section>
 
 <!-- ─── HERO ─── -->
 <section id="hero">
@@ -4479,6 +4860,73 @@
       });
     });
   });
+
+  // ═══════════════════════════════════════════════════════════
+  // LIFESTYLE BANNER CAROUSEL (primer impacto)
+  // ═══════════════════════════════════════════════════════════
+  (function lifestyleBanner() {
+    const track = document.getElementById('lb-track');
+    if (!track) return;
+    const slides = track.querySelectorAll('.lb-slide');
+    const dots = document.querySelectorAll('.lb-dot');
+    const prev = document.getElementById('lb-prev');
+    const next = document.getElementById('lb-next');
+    const currentLabel = document.getElementById('lb-current');
+    let current = 0;
+    let timer = null;
+    const total = slides.length;
+    const INTERVAL = 5500;
+
+    function pad(n) { return String(n).padStart(2, '0'); }
+
+    function go(idx) {
+      current = (idx + total) % total;
+      track.style.transform = `translateX(-${current * 100}%)`;
+      slides.forEach((s, i) => s.classList.toggle('active', i === current));
+      dots.forEach((d, i) => {
+        d.classList.remove('active');
+        // force reflow to restart the progress animation
+        void d.offsetWidth;
+      });
+      dots[current].classList.add('active');
+      if (currentLabel) currentLabel.textContent = pad(current + 1);
+    }
+
+    function start() { stop(); timer = setInterval(() => go(current + 1), INTERVAL); }
+    function stop()  { if (timer) { clearInterval(timer); timer = null; } }
+
+    dots.forEach((d, i) => d.addEventListener('click', () => { go(i); start(); }));
+    if (prev) prev.addEventListener('click', () => { go(current - 1); start(); });
+    if (next) next.addEventListener('click', () => { go(current + 1); start(); });
+
+    // Pause on hover (desktop)
+    const container = track.closest('.lb-track-container');
+    container.addEventListener('mouseenter', stop);
+    container.addEventListener('mouseleave', start);
+
+    // Touch swipe
+    let touchX = 0, touchActive = false;
+    track.addEventListener('touchstart', e => {
+      touchX = e.touches[0].clientX;
+      touchActive = true;
+      stop();
+    }, { passive: true });
+    track.addEventListener('touchend', e => {
+      if (!touchActive) return;
+      touchActive = false;
+      const dx = e.changedTouches[0].clientX - touchX;
+      if (Math.abs(dx) > 50) go(current + (dx < 0 ? 1 : -1));
+      start();
+    });
+
+    // Keyboard arrows when banner focused
+    track.addEventListener('keydown', e => {
+      if (e.key === 'ArrowLeft')  { go(current - 1); start(); }
+      if (e.key === 'ArrowRight') { go(current + 1); start(); }
+    });
+
+    start();
+  })();
 
   // ═══════════════════════════════════════════════════════════
   // BANNER HERO CAROUSEL
