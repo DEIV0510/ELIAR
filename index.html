@@ -566,21 +566,39 @@
     color: white;
   }
 
-  /* Dark cinematic overlay con fade gradual (elimina la línea negra) */
+  /* Dark cinematic overlay con fade gradual + brillo extra en imagen */
   #hero::before {
     content: '';
     position: absolute;
     inset: 0;
     background:
       linear-gradient(to right,
-        rgba(5,11,23,0.96) 0%,
-        rgba(5,11,23,0.92) 25%,
-        rgba(5,11,23,0.7)  40%,
-        rgba(5,11,23,0.35) 55%,
-        rgba(5,11,23,0.18) 70%,
-        rgba(5,11,23,0.25) 100%);
+        rgba(5,11,23,0.92) 0%,
+        rgba(5,11,23,0.85) 22%,
+        rgba(5,11,23,0.55) 38%,
+        rgba(5,11,23,0.18) 55%,
+        rgba(5,11,23,0.0)  72%,
+        rgba(5,11,23,0.0)  100%);
     pointer-events: none;
     z-index: 1;
+  }
+
+  /* Capa de brillo sutil sobre la imagen (lado derecho) */
+  #hero {
+    isolation: isolate;
+  }
+  #hero > * { position: relative; z-index: 3; }
+
+  .hero-brightness {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right,
+      transparent 50%,
+      rgba(255,255,255,0.08) 75%,
+      rgba(255,255,255,0.12) 100%);
+    mix-blend-mode: overlay;
+    pointer-events: none;
+    z-index: 2;
   }
 
   /* Subtle film grain */
@@ -3769,6 +3787,7 @@
 
 <!-- ─── HERO ─── -->
 <section id="hero">
+  <div class="hero-brightness"></div>
   <div class="hero-content">
     <div class="hero-tag">
       <span class="dot"></span>
